@@ -1,0 +1,122 @@
+{
+  "$id": "https://soracom.io/soratun-config-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "soratun configuration schema",
+  "description": "Configuration schema for soratun, SORACOM Arc client. You can manually edit any properties, but inconsistent modification might be result in connection failure. Use `soratun bootstrap` command as possible as you can to update the configuration.",
+  "type": "object",
+  "properties": {
+    "privateKey": {
+      "type": "string",
+      "minLength": 44,
+      "maxLength": 44,
+      "description": "WireGuard private key. Do not modify this unless you know what you are doing"
+    },
+    "publicKey": {
+      "type": "string",
+      "minLength": 44,
+      "maxLength": 44,
+      "description": "WireGuard public key. Do not modify this unless you know what you are doing"
+    },
+    "simId": {
+      "type": "string",
+      "description": "SIM ID of your virtual SIM",
+      "default": "890000xxxxxxxxxxxxx"
+    },
+    "logLevel": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2,
+      "description": "Logging level (0: silent / 1: error / 2: verbose)",
+      "default": 2
+    },
+    "enableMetrics": {
+      "type": "boolean",
+      "description": "Enable metrics logging every 60 seconds, if logLevel is error (1) or verbose (2)",
+      "default": true
+    },
+    "interface": {
+      "type": "string",
+      "description": "Interface name. if you are testing on macOS, the interface name must be \"utun[0-9]+\" for an explicit interface name, or just \"utun\" to have the kernel select the lowest available number.",
+      "default": "soratun0"
+    },
+    "additionalAllowedIPs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(3[0-2]|[1-2][0-9]|[0-9]))?$"
+      },
+      "description": "Array of additional WireGuard allowed CIDRs"
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "authKey": {
+          "type": "string",
+          "pattern": "^secret-.*",
+          "description": "SORACOM API auth key secret",
+          "default": "secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "authKeyId": {
+          "type": "string",
+          "pattern": "^keyId-.*",
+          "description": "SORACOM API auth key",
+          "default": "keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "SORACOM API endpoint. Global coverage: https://g.api.soracom.io / Japan coverage: https://api.soracom.io",
+          "default": "https://api.soracom.io"
+        }
+      },
+      "required": [
+        "authKey",
+        "authKeyId",
+        "endpoint"
+      ],
+      "description": "SORACOM API client information. Saved if you use `soratun bootstrap authkey` command. Other bootstrap methods don't use this."
+    },
+    "arcSessionStatus": {
+      "type": "object",
+      "properties": {
+        "arcServerPeerPublicKey": {
+          "type": "string",
+          "minLength": 44,
+          "maxLength": 44,
+          "description": "WireGuard public key of the SORACOM Arc server"
+        },
+        "arcServerEndpoint": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+:[0-9]+$",
+          "description": "A UDP endpoint of the SORACOM Arc server in `ip or hostname:port` format"
+        },
+        "arcClientPeerIpAddress": {
+          "type": "string",
+          "format": "ipv4",
+          "description": "An IP address for this client"
+        },
+        "arcAllowedIPs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+\\/[0-9]+$"
+          },
+          "description": "An array of CIDRs allowed for routing from the SORACOM Arc server"
+        }
+      },
+      "required": [
+        "arcServerPeerPublicKey",
+        "arcServerEndpoint",
+        "arcClientPeerIpAddress",
+        "arcAllowedIPs"
+      ],
+      "description": "SORACOM Arc connection information. Usually you should not edit this property manually."
+    }
+  },
+  "required": [
+    "privateKey",
+    "publicKey",
+    "logLevel",
+    "enableMetrics",
+    "interface"
+  ]
+}

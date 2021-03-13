@@ -1,0 +1,122 @@
+{
+  "$id": "https://soracom.io/soratun-config-schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "soratun 設定ファイルスキーマ",
+  "description": "SORACOM Arc クライアント soratun の設定ファイルのスキーマです。手動で編集できますが一貫性のない変更を行った場合接続できなくなる可能性があります。可能な限り `soratun bootstrap` コマンドを使用してください。",
+  "type": "object",
+  "properties": {
+    "privateKey": {
+      "type": "string",
+      "minLength": 44,
+      "maxLength": 44,
+      "description": "WireGuard 秘密鍵。通常は編集しないでください。"
+    },
+    "publicKey": {
+      "type": "string",
+      "minLength": 44,
+      "maxLength": 44,
+      "description": "WireGuard 公開鍵。通常は編集しないでください。"
+    },
+    "simId": {
+      "type": "string",
+      "description": "バーチャル SIM の SIM ID",
+      "default": "890000xxxxxxxxxxxxx"
+    },
+    "logLevel": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2,
+      "description": "ログレベル (0: 出力無し / 1: エラーのみ出力 / 2: デバッグ情報も出力)",
+      "default": 2
+    },
+    "enableMetrics": {
+      "type": "boolean",
+      "description": "有効にした場合、ログレベルが `error` または `verbose` の際に標準出力にメトリックスを約 60 秒毎に出力します。",
+      "default": true
+    },
+    "interface": {
+      "type": "string",
+      "description": "soratun が作成するインターフェース名。macOS でテストする場合、OS の制限のため `utun` で始まる文字列を指定してください。",
+      "default": "soratun0"
+    },
+    "additionalAllowedIPs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(3[0-2]|[1-2][0-9]|[0-9]))?$"
+      },
+      "description": "soratun 作成時に WireGuard の AllowedIPs に追加する CIDR の配列。このネットワーク宛の通信も `soratun` 経由になります。"
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "authKey": {
+          "type": "string",
+          "pattern": "^secret-.*",
+          "description": "SORACOM API 認証キーシークレット",
+          "default": "secret-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "authKeyId": {
+          "type": "string",
+          "pattern": "^keyId-.*",
+          "description": "SORACOM API 認証キー ID",
+          "default": "keyId-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "SORACOM API のエンドポイント。Global カバレッジ: https://g.api.soracom.io / Japan カバレッジ: https://api.soracom.io",
+          "default": "https://api.soracom.io"
+        }
+      },
+      "required": [
+        "authKey",
+        "authKeyId",
+        "endpoint"
+      ],
+      "description": "SORACOM API 接続情報。`soratun bootstrap authkey` を実行した際に保存されます。その他のブートストラップ方法では使用されません。"
+    },
+    "arcSessionStatus": {
+      "type": "object",
+      "properties": {
+        "arcServerPeerPublicKey": {
+          "type": "string",
+          "minLength": 44,
+          "maxLength": 44,
+          "description": "SORACOM Arc サーバーの WireGuard 公開鍵"
+        },
+        "arcServerEndpoint": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+:[0-9]+$",
+          "description": "SORACOM Arc サーバーの UDP エンドポイント (`IP アドレスまたはホスト名:ポート番号`)"
+        },
+        "arcClientPeerIpAddress": {
+          "type": "string",
+          "format": "ipv4",
+          "description": "クライアントの IP アドレス"
+        },
+        "arcAllowedIPs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+\\/[0-9]+$"
+          },
+          "description": "SORACOM Arc サーバーから受信した WireGuard AllowedIPs の配列"
+        }
+      },
+      "required": [
+        "arcServerPeerPublicKey",
+        "arcServerEndpoint",
+        "arcClientPeerIpAddress",
+        "arcAllowedIPs"
+      ],
+      "description": "SORACOM Arc 接続情報。自動的に生成または更新されますので通常は編集しないでください。"
+    }
+  },
+  "required": [
+    "privateKey",
+    "publicKey",
+    "logLevel",
+    "enableMetrics",
+    "interface"
+  ]
+}

@@ -1,0 +1,44 @@
+project_name: soratun
+before:
+  hooks:
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+    goarch:
+      - arm
+      - arm64
+      - amd64
+    goarm:
+      - 7
+    main: ./cmd/soratun/main.go
+    binary: soratun
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X 'github.com/soracom/soratun/cmd.Commit={{.ShortCommit}}'
+      - -X 'github.com/soracom/soratun/cmd.Tag={{.Tag}}'
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}-next"
+release:
+  draft: true
+archives:
+  - wrap_in_directory: true
+    files:
+      - LICENSE
+      - README.md
+      - conf/*
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "^build:"

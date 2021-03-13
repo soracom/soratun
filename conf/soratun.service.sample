@@ -1,0 +1,19 @@
+[Unit]
+Description=soratun
+Documentation=https://users.soracom.io/
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+# ExecStartPre=/usr/local/bin/soratun bootstrap cellular --config /etc/arc.json
+ExecStart=/usr/local/bin/soratun up --config /etc/arc.json
+Restart=always
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=soratun
+SyslogFacility=local7
+WatchdogSec=120
+
+[Install]
+WantedBy=multi-user.target
