@@ -1,6 +1,6 @@
 # soratun 設定ファイルスキーマ
 
-SORACOM Arc クライアント soratun の設定ファイルのスキーマです。手動で編集できますが一貫性のない変更を行った場合接続できなくなる可能性があります。可能な限り `soratun bootstrap` コマンドを使用してください。
+SORACOM Arc クライアント `soratun` の設定ファイル(デフォルト `arc.json`)のスキーマです。手動で編集できますが一貫性のない変更を行った場合接続できなくなる可能性があります。可能な限り `soratun bootstrap` コマンドを使用してください。
 
 ## Properties
 

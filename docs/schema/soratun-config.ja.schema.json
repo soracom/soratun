@@ -2,7 +2,7 @@
   "$id": "https://soracom.io/soratun-config-schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "soratun 設定ファイルスキーマ",
-  "description": "SORACOM Arc クライアント soratun の設定ファイルのスキーマです。手動で編集できますが一貫性のない変更を行った場合接続できなくなる可能性があります。可能な限り `soratun bootstrap` コマンドを使用してください。",
+  "description": "SORACOM Arc クライアント `soratun` の設定ファイル(デフォルト `arc.json`)のスキーマです。手動で編集できますが一貫性のない変更を行った場合接続できなくなる可能性があります。可能な限り `soratun bootstrap` コマンドを使用してください。",
   "type": "object",
   "properties": {
     "privateKey": {
