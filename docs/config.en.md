@@ -1,6 +1,6 @@
 # soratun configuration schema
 
-Configuration schema for soratun, SORACOM Arc client. You can manually edit any properties, but inconsistent modification might be result in connection failure. Use `soratun bootstrap` command as possible as you can to update the configuration.
+Configuration schema for `soratun`, SORACOM Arc client (default file name `arc.json`). You can manually edit any properties, but inconsistent modification might be resulted in connection failure. Use `soratun bootstrap` command as possible as you can to update the configuration.
 
 ## Properties
 
