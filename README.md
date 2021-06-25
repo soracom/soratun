@@ -7,7 +7,9 @@ An easy-to-use, userspace [SORACOM Arc](https://soracom.jp/services/arc/) client
 
 ## Tested Platforms
 
-- Ubuntu 20.04.02 LTS on Raspberry Pi 4 Model B (4 GB) (Linux ubuntu 5.4.0-1034-raspi #37-Ubuntu SMP PREEMPT Mon Apr 12 23:18:42 UTC 2021 armv7l armv7l armv7l GNU/Linux)
+- Ubuntu 20.04.02 LTS on amd64
+- Ubuntu 20.04.02 LTS on arm
+  - Raspberry Pi 4 Model B (4 GB) (Linux ubuntu 5.4.0-1034-raspi #37-Ubuntu SMP PREEMPT Mon Apr 12 23:18:42 UTC 2021 armv7l armv7l armv7l GNU/Linux)
 - macOS Big Sur 11.3 (20E232) -- **For development and testing purpose only**
 
 ## Usage
@@ -90,7 +92,7 @@ Tips: you can skip interactive wizard by supplying required parameters via flags
 ./soratun bootstrap authkey --auth-key-id keyId-xxx --auth-key secret-xxx --coverage-type jp
 ```
 
-For other bootstrapping method detail, please consult SORACOM documentation at:  
+For other bootstrapping method detail, please consult SORACOM documentation at:
 
 - English: https://developers.soracom.io/en/
 - Japanese: https://users.soracom.io/ja-jp/docs/arc/
