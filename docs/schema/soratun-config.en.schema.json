@@ -57,6 +57,16 @@
       "description": "WireGuard `PersistentKeepalive` for the SORACOM Arc server",
       "default": 60
     },
+    "postUp": {
+      "type": "string",
+      "description": "Shell script which will be executed by `/bin/sh` after the interface is up successfully",
+      "default": ""
+    },
+    "postDown": {
+      "type": "string",
+      "description": "Shell script which will be executed by `/bin/sh` after the interface is removed successfully",
+      "default": ""
+    },
     "profile": {
       "type": "object",
       "properties": {

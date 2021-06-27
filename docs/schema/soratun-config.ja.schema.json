@@ -57,6 +57,16 @@
       "description": "SORACOM Arc サーバーとの接続における `PersistentKeepalive`",
       "default": 60
     },
+    "postUp": {
+      "type": "string",
+      "description": "仮想インターフェース作成後に実行されるシェルスクリプト。`/bin/sh` で実行されます。",
+      "default": ""
+    },
+    "postDown": {
+      "type": "string",
+      "description": "仮想インターフェース削除後に実行されるシェルスクリプト。`/bin/sh` で実行されます。",
+      "default": ""
+    },
     "profile": {
       "type": "object",
       "properties": {

@@ -15,6 +15,8 @@ SORACOM Arc クライアント `soratun` の設定ファイル(デフォルト `
 | `arcSessionStatus`     | [object](#arcsessionstatus) | No       | SORACOM Arc 接続情報。自動的に生成または更新されますので通常は編集しないでください。                                           |
 | `mtu`                  | number                      | No       | soratun が作成するインターフェースの MTU                                                                                       |
 | `persistentKeepalive`  | number                      | No       | SORACOM Arc サーバーとの接続における `PersistentKeepalive`                                                                     |
+| `postDown`             | string                      | No       | 仮想インターフェース削除後に実行されるシェルスクリプト。`/bin/sh` で実行されます。                                             |
+| `postUp`               | string                      | No       | 仮想インターフェース作成後に実行されるシェルスクリプト。`/bin/sh` で実行されます。                                             |
 | `profile`              | [object](#profile)          | No       | SORACOM API 接続情報。`soratun bootstrap authkey` を実行した際に保存されます。その他のブートストラップ方法では使用されません。 |
 | `simId`                | string                      | No       | バーチャル SIM の SIM ID                                                                                                       |
 
