@@ -27,6 +27,7 @@ Available Commands:
   status      Display SORACOM Arc interface status
   up          Setup SORACOM Arc interface
   version     Show version
+  wg-config   Dump soratun configuration file as WireGuard format
 
 Flags:
       --config string   Specify path to SORACOM Arc client configuration file (default "arc.json")

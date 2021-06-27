@@ -4,14 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"net"
-	"os"
-	"strings"
-
 	"github.com/soracom/soratun"
 	"github.com/spf13/cobra"
+	"io/ioutil"
+	"log"
+	"os"
 )
 
 var (
@@ -34,6 +31,7 @@ func init() {
 
 	RootCmd.AddCommand(bootstrapCmd())
 	RootCmd.AddCommand(configCmd())
+	RootCmd.AddCommand(dumpWireGuardConfigCmd())
 	RootCmd.AddCommand(statusCmd())
 	RootCmd.AddCommand(upCmd())
 	RootCmd.AddCommand(versionCmd())
@@ -45,6 +43,18 @@ func initSoratun(_ *cobra.Command, _ []string) {
 		log.Fatalf("Error: %s\n", err)
 	}
 	Config = config
+
+	if Config.Mtu == 0 {
+		Config.Mtu = soratun.DefaultMTU
+	}
+
+	if Config.PersistentKeepalive == 0 {
+		Config.PersistentKeepalive = soratun.DefaultPersistentKeepaliveInterval
+	}
+
+	if len(Config.AdditionalAllowedIPs) > 0 {
+		Config.ArcSession.ArcAllowedIPs = append(Config.ArcSession.ArcAllowedIPs, Config.AdditionalAllowedIPs...)
+	}
 
 	if os.Getenv("__SORACOM_NO_DYNAMIC_CLIENT_SETUP_FOR_TEST") != "" {
 		// NOTE:
@@ -67,29 +77,4 @@ func readConfig(path string) (*soratun.Config, error) {
 	}
 
 	return &config, nil
-}
-
-func dumpWireGuardConfig(session *soratun.ArcSession) {
-	var ips []string
-	for _, ip := range session.ArcAllowedIPs {
-		ips = append(ips, (*net.IPNet)(ip).String())
-	}
-
-	fmt.Printf(`--- WireGuard configuration ----------------------
-[Interface]
-Address = %s/32
-PrivateKey = %s
-
-[Peer]
-PublicKey = %s
-AllowedIPs = %s
-Endpoint = %s:%d
---- End of WireGuard configuration ---------------
-`,
-		session.ArcClientPeerIpAddress,
-		Config.PrivateKey,
-		session.ArcServerPeerPublicKey,
-		strings.Join(ips, ", "),
-		session.ArcServerEndpoint.IP,
-		session.ArcServerEndpoint.Port)
 }

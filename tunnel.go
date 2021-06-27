@@ -38,6 +38,10 @@ const (
 	LogLevelError = device.LogLevelError
 	// LogLevelSilent is an alias for WireGuard device logger equivalent.
 	LogLevelSilent = device.LogLevelSilent
+	// DefaultPersistentKeepaliveInterval defines WireGuard persistent keepalive interval to SORACOM Arc.
+	DefaultPersistentKeepaliveInterval = 60
+	// DefaultMTU is MTU for the configured interface.
+	DefaultMTU = device.DefaultMTU
 )
 
 // Up ups new SORACOM Arc tunnel with given ArcSession.
@@ -57,13 +61,8 @@ func Up(ctx context.Context, config *Config) {
 		}
 	}
 
-	mtu := device.DefaultMTU
-	if config.Mtu > 0 {
-		mtu = config.Mtu
-	}
-
 	// specified interface name and actual interface name may vary
-	t, err := tun.CreateTUN(iname, mtu)
+	t, err := tun.CreateTUN(iname, config.Mtu)
 	if err != nil {
 		logger.Errorf("failed to create new tunnel: %v", err)
 		os.Exit(1)
@@ -131,10 +130,6 @@ func Up(ctx context.Context, config *Config) {
 		allowedIPs = append(allowedIPs, (net.IPNet)(*v))
 	}
 
-	persistentKeepalive := 60
-	if config.PersistentKeepalive > 0 {
-		persistentKeepalive = config.PersistentKeepalive
-	}
 
 	err = client.ConfigureDevice(iname, wgtypes.Config{
 		PrivateKey:   config.PrivateKey.AsWgKey(),
@@ -144,7 +139,7 @@ func Up(ctx context.Context, config *Config) {
 			{
 				PublicKey:                   *config.ArcSession.ArcServerPeerPublicKey.AsWgKey(),
 				Endpoint:                    (*net.UDPAddr)(config.ArcSession.ArcServerEndpoint),
-				PersistentKeepaliveInterval: duration(time.Duration(persistentKeepalive) * time.Second),
+				PersistentKeepaliveInterval: duration(time.Duration(config.PersistentKeepalive) * time.Second),
 				ReplaceAllowedIPs:           true,
 				AllowedIPs:                  allowedIPs,
 			},
