@@ -6,11 +6,14 @@ package soratun
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
+	"os/exec"
 	"os/signal"
 	"runtime"
+	"strings"
 	"syscall"
 	"time"
 
@@ -154,6 +157,15 @@ func Up(ctx context.Context, config *Config) {
 		os.Exit(1)
 	}
 
+	if config.PostUp != "" {
+		logger.Verbosef("executing PostUp: %s", config.PostUp)
+		result, err := runCommand(config.PostUp)
+		if err != nil {
+			logger.Errorf("failed to do PostUp: %s\n", err)
+		}
+		logger.Verbosef("PostUp response: %s", result)
+	}
+
 	if isWatchdogEnabled() {
 		_, err = daemon.SdNotify(false, daemon.SdNotifyReady)
 		if err != nil {
@@ -217,6 +229,15 @@ func Up(ctx context.Context, config *Config) {
 
 	d.Close()
 
+	if config.PostDown != "" {
+		logger.Verbosef("executing PostDown: %s", config.PostDown)
+		result, err := runCommand(config.PostDown)
+		if err != nil {
+			logger.Errorf("failed to do PostDown: %s\n", err)
+		}
+		logger.Verbosef("PostDown response: %s", result)
+	}
+
 	logger.Verbosef("shutting down")
 }
 
@@ -234,4 +255,24 @@ func DefaultInterfaceName() string {
 		iname = "utun"
 	}
 	return iname
+}
+
+func runCommand(s string) (string, error) {
+	cmd := exec.Command("/bin/sh", "-c", s)
+
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return "", fmt.Errorf("error while setting up \"%s\"", s)
+	}
+
+	if err := cmd.Start(); err != nil {
+		return "", fmt.Errorf("error while starting \"%s\" %s", s, err)
+	}
+
+	result, err := ioutil.ReadAll(stdout)
+	if err != nil {
+		return "", fmt.Errorf("error while reading output from \"%s\"", s)
+	}
+
+	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
 }

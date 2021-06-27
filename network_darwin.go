@@ -2,9 +2,6 @@ package soratun
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os/exec"
-	"strings"
 
 	"golang.zx2c4.com/wireguard/device"
 )
@@ -38,24 +35,4 @@ func ConfigureInterface(iname string, config *Config) error {
 		logger.Verbosef("%s", result)
 	}
 	return nil
-}
-
-func runCommand(s string) (string, error) {
-	cmd := exec.Command("/bin/sh", "-c", s)
-
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return "", fmt.Errorf("error while setting up \"%s\"", s)
-	}
-
-	if err := cmd.Start(); err != nil {
-		return "", fmt.Errorf("error while starting \"%s\" %s", s, err)
-	}
-
-	result, err := ioutil.ReadAll(stdout)
-	if err != nil {
-		return "", fmt.Errorf("error while reading output from \"%s\"", s)
-	}
-
-	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
 }

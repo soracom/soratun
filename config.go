@@ -42,6 +42,10 @@ type Config struct {
 	Mtu int `json:"mtu,omitempty"`
 	// WireGuard PersistentKeepalive
 	PersistentKeepalive int `json:"persistentKeepalive,omitempty"`
+	// PostUp will be executed after the interface is up successfully
+	PostUp string `json:"postUp,omitempty"`
+	// PostDown will be executed after the interface is removed successfully
+	PostDown string `json:"postDown,omitempty"`
 	// Profile is for SORACOM API access.
 	Profile *Profile `json:"profile,omitempty"`
 	// ArcSession holds connection information provided from SORACOM Arc server.
