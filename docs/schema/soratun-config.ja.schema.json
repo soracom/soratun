@@ -47,6 +47,16 @@
       },
       "description": "soratun 作成時に WireGuard の AllowedIPs に追加する CIDR の配列。このネットワーク宛の通信も `soratun` 経由になります。"
     },
+    "mtu": {
+      "type": "number",
+      "description": "soratun が作成するインターフェースの MTU",
+      "default": 1420
+    },
+    "persistentKeepaliveInterval": {
+      "type": "number",
+      "description": "SORACOM Arc サーバーとの接続における `PersistentKeepaliveInterval`",
+      "default": 60
+    },
     "profile": {
       "type": "object",
       "properties": {

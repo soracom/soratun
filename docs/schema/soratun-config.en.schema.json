@@ -47,6 +47,16 @@
       },
       "description": "Array of additional WireGuard allowed CIDRs"
     },
+    "mtu": {
+      "type": "number",
+      "description": "MTU for the interface",
+      "default": 1420
+    },
+    "persistentKeepaliveInterval": {
+      "type": "number",
+      "description": "WireGuard `PersistentKeepaliveInterval` for the SORACOM Arc server",
+      "default": 60
+    },
     "profile": {
       "type": "object",
       "properties": {
