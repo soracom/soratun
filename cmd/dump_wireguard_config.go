@@ -25,11 +25,20 @@ func dumpWireGuardConfig() {
 		ips = append(ips, (*net.IPNet)(ip).String())
 	}
 
+	postUp := ""
+	postDown := ""
+	if Config.PostUp != "" {
+		postUp = fmt.Sprintf("PostUp = %s\n", Config.PostUp)
+	}
+	if Config.PostDown != "" {
+		postDown = fmt.Sprintf("PostDown = %s\n", Config.PostDown)
+	}
+
 	fmt.Printf(`[Interface]
 Address = %s/32
 PrivateKey = %s
 MTU = %d
-
+%s%s
 [Peer]
 PublicKey = %s
 AllowedIPs = %s
@@ -39,6 +48,8 @@ PersistentKeepalive = %d
 		Config.ArcSession.ArcClientPeerIpAddress,
 		Config.PrivateKey,
 		Config.Mtu,
+		postUp,
+		postDown,
 		Config.ArcSession.ArcServerPeerPublicKey,
 		strings.Join(ips, ", "),
 		Config.ArcSession.ArcServerEndpoint.IP,
