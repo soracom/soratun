@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"net"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 func dumpWireGuardConfigCmd() *cobra.Command {

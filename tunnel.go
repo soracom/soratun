@@ -130,7 +130,6 @@ func Up(ctx context.Context, config *Config) {
 		allowedIPs = append(allowedIPs, (net.IPNet)(*v))
 	}
 
-
 	err = client.ConfigureDevice(iname, wgtypes.Config{
 		PrivateKey:   config.PrivateKey.AsWgKey(),
 		FirewallMark: nil,

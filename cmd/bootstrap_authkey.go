@@ -3,11 +3,12 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log"
+	"strings"
+
 	"github.com/manifoldco/promptui"
 	"github.com/soracom/soratun"
 	"github.com/spf13/cobra"
-	"log"
-	"strings"
 )
 
 var (

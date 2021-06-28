@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/soracom/soratun"
-	"github.com/spf13/cobra"
 	"log"
 	"os"
+
+	"github.com/soracom/soratun"
+	"github.com/spf13/cobra"
 )
 
 func upCmd() *cobra.Command {

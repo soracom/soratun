@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+	"strings"
+
 	"github.com/spf13/cobra"
 	"golang.zx2c4.com/wireguard/wgctrl"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
-	"log"
-	"strings"
 )
 
 func statusCmd() *cobra.Command {
