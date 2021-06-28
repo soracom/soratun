@@ -1,15 +1,17 @@
 # soratun
 
-An easy-to-use, userspace [SORACOM Arc](https://soracom.jp/services/arc/) client powered by [wireguard-go](https://git.zx2c4.com/wireguard-go/about/). For deploying and scaling Raspberry Pi devices working with SORACOM platform and SORACOM Arc.
+An easy-to-use, userspace [SORACOM Arc](https://soracom.jp/services/arc/) client powered by [wireguard-go](https://git.zx2c4.com/wireguard-go/about/). For deploying and scaling Linux servers/Raspberry Pi devices working with SORACOM platform and SORACOM Arc.
 
 - Quick deployment (copy one or two binary files and done)
 - Integration with SORACOM platform
 
 ## Tested Platforms
 
-- Ubuntu 20.04.02 LTS on amd64
-- Ubuntu 20.04.02 LTS on arm
-  - Raspberry Pi 4 Model B (4 GB) (Linux ubuntu 5.4.0-1034-raspi #37-Ubuntu SMP PREEMPT Mon Apr 12 23:18:42 UTC 2021 armv7l armv7l armv7l GNU/Linux)
+- Linux amd64
+  - Ubuntu 20.04.2 LTS
+- Linux arm (Raspberry Pi 32-bit)
+  - Raspberry Pi OS 2021-05-07
+  - Ubuntu 20.04.2 LTS
 - macOS Big Sur 11.3 (20E232) -- **For development and testing purpose only**
 
 ## Usage
@@ -36,7 +38,7 @@ Flags:
 Use "soratun [command] --help" for more information about a command.
 ```
 
-See the schema ([English](./docs/config.en.md) / [Japanese](./docs/config.ja.md)) for configuration file `arc.json` format.
+See the schema ([English](./docs/config.en.md) / [Japanese](./docs/config.ja.md)) for configuration file `arc.json` detail.
 
 ### Getting Started
 
@@ -90,7 +92,7 @@ See the schema ([English](./docs/config.en.md) / [Japanese](./docs/config.ja.md)
 Tips: you can skip interactive wizard by supplying required parameters via flags as follows.
 
 ```console
-./soratun bootstrap authkey --auth-key-id keyId-xxx --auth-key secret-xxx --coverage-type jp
+$ soratun bootstrap authkey --auth-key-id keyId-xxx --auth-key secret-xxx --coverage-type jp
 ```
 
 For other bootstrapping method detail, please consult SORACOM documentation at:
@@ -103,11 +105,11 @@ For other bootstrapping method detail, please consult SORACOM documentation at:
 Use [`conf/soratun.service.sample`](conf/soratun.service.sample) as a starter, copy file you edited to `/etc/systemd/system/soratun.service` directory, then
 
 ```console
-# sudo systemctl enable soratun
-# sudo systemctl start soratun
-# sudo systemctl status soratun
-# journalctl -u soratun -f
-# sudo systemctl stop soratun
+$ sudo systemctl enable soratun
+$ sudo systemctl start soratun
+$ sudo systemctl status soratun
+$ journalctl -u soratun -f
+$ sudo systemctl stop soratun
 ```
 
 `soratun` supports systemd watchdog. It'll update the timer every 110 seconds, based on [Protocol & Cryptography - WireGuard](https://www.wireguard.com/protocol/):
