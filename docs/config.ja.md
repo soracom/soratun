@@ -13,6 +13,8 @@ SORACOM Arc クライアント `soratun` の設定ファイル(デフォルト `
 | `publicKey`            | string                      | **Yes**  | WireGuard 公開鍵。通常は編集しないでください。                                                                                 |
 | `additionalAllowedIPs` | string[]                    | No       | soratun 作成時に WireGuard の AllowedIPs に追加する CIDR の配列。このネットワーク宛の通信も `soratun` 経由になります。         |
 | `arcSessionStatus`     | [object](#arcsessionstatus) | No       | SORACOM Arc 接続情報。自動的に生成または更新されますので通常は編集しないでください。                                           |
+| `mtu`                  | number                      | No       | soratun が作成するインターフェースの MTU                                                                                       |
+| `persistentKeepalive`  | number                      | No       | SORACOM Arc サーバーとの接続における `PersistentKeepalive`                                                                     |
 | `profile`              | [object](#profile)          | No       | SORACOM API 接続情報。`soratun bootstrap authkey` を実行した際に保存されます。その他のブートストラップ方法では使用されません。 |
 | `simId`                | string                      | No       | バーチャル SIM の SIM ID                                                                                                       |
 

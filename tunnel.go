@@ -57,8 +57,13 @@ func Up(ctx context.Context, config *Config) {
 		}
 	}
 
+	mtu := device.DefaultMTU
+	if config.Mtu > 0 {
+		mtu = config.Mtu
+	}
+
 	// specified interface name and actual interface name may vary
-	t, err := tun.CreateTUN(iname, device.DefaultMTU)
+	t, err := tun.CreateTUN(iname, mtu)
 	if err != nil {
 		logger.Errorf("failed to create new tunnel: %v", err)
 		os.Exit(1)
@@ -126,6 +131,11 @@ func Up(ctx context.Context, config *Config) {
 		allowedIPs = append(allowedIPs, (net.IPNet)(*v))
 	}
 
+	persistentKeepalive := 60
+	if config.PersistentKeepalive > 0 {
+		persistentKeepalive = config.PersistentKeepalive
+	}
+
 	err = client.ConfigureDevice(iname, wgtypes.Config{
 		PrivateKey:   config.PrivateKey.AsWgKey(),
 		FirewallMark: nil,
@@ -134,7 +144,7 @@ func Up(ctx context.Context, config *Config) {
 			{
 				PublicKey:                   *config.ArcSession.ArcServerPeerPublicKey.AsWgKey(),
 				Endpoint:                    (*net.UDPAddr)(config.ArcSession.ArcServerEndpoint),
-				PersistentKeepaliveInterval: duration(60 * time.Second),
+				PersistentKeepaliveInterval: duration(time.Duration(persistentKeepalive) * time.Second),
 				ReplaceAllowedIPs:           true,
 				AllowedIPs:                  allowedIPs,
 			},
