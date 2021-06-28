@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/soracom/soratun"
 	"github.com/spf13/cobra"
 	"log"
@@ -18,12 +19,10 @@ func upCmd() *cobra.Command {
 				log.Fatal("Failed to determine connection information. Please bootstrap or create a new session from the user console.")
 			}
 
-			if len(Config.AdditionalAllowedIPs) > 0 {
-				Config.ArcSession.ArcAllowedIPs = append(Config.ArcSession.ArcAllowedIPs, Config.AdditionalAllowedIPs...)
-			}
-
 			if v := os.Getenv("SORACOM_VERBOSE"); v != "" {
-				dumpWireGuardConfig(Config.ArcSession)
+				fmt.Println("--- WireGuard configuration ----------------------")
+				dumpWireGuardConfig()
+				fmt.Println("--- End of WireGuard configuration ---------------")
 			}
 
 			soratun.Up(ctx, Config)
