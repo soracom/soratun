@@ -27,11 +27,15 @@ func dumpWireGuardConfig() {
 
 	postUp := ""
 	postDown := ""
-	if Config.PostUp != "" {
-		postUp = fmt.Sprintf("PostUp = %s\n", Config.PostUp)
+	if len(Config.PostUp) > 0 {
+		for _, com := range Config.PostUp {
+			postUp = fmt.Sprintf("%sPostUp = %s\n", postUp, com)
+		}
 	}
-	if Config.PostDown != "" {
-		postDown = fmt.Sprintf("PostDown = %s\n", Config.PostDown)
+	if len(Config.PostDown) > 0 {
+		for _, com := range Config.PostDown {
+			postDown = fmt.Sprintf("%sPostDown = %s\n", postDown, com)
+		}
 	}
 
 	fmt.Printf(`[Interface]

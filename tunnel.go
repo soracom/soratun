@@ -157,13 +157,16 @@ func Up(ctx context.Context, config *Config) {
 		os.Exit(1)
 	}
 
-	if config.PostUp != "" {
-		logger.Verbosef("executing PostUp: %s", config.PostUp)
-		result, err := runCommand(config.PostUp)
-		if err != nil {
-			logger.Errorf("failed to do PostUp: %s\n", err)
+	if len(config.PostUp) > 0 {
+		for i, com := range config.PostUp {
+			command := strings.Replace(com, "%i", iname, -1)
+			logger.Verbosef("executing PostUp(%d): %s", i, command)
+			result, err := runCommand(command)
+			if err != nil {
+				logger.Errorf("failed to do PostUp(%d): %s\n", i, err)
+			}
+			logger.Verbosef("PostUp(%d) response: %s", i, result)
 		}
-		logger.Verbosef("PostUp response: %s", result)
 	}
 
 	if isWatchdogEnabled() {
@@ -229,13 +232,16 @@ func Up(ctx context.Context, config *Config) {
 
 	d.Close()
 
-	if config.PostDown != "" {
-		logger.Verbosef("executing PostDown: %s", config.PostDown)
-		result, err := runCommand(config.PostDown)
-		if err != nil {
-			logger.Errorf("failed to do PostDown: %s\n", err)
+	if len(config.PostDown) > 0 {
+		for i, com := range config.PostDown {
+			command := strings.Replace(com, "%i", iname, -1)
+			logger.Verbosef("executing PostDown(%d): %s", i, command)
+			result, err := runCommand(command)
+			if err != nil {
+				logger.Errorf("failed to do PostDown(%d): %s\n", i, err)
+			}
+			logger.Verbosef("PostDown(%d) response: %s", i, result)
 		}
-		logger.Verbosef("PostDown response: %s", result)
 	}
 
 	logger.Verbosef("shutting down")

@@ -58,14 +58,18 @@
       "default": 60
     },
     "postUp": {
-      "type": "string",
-      "description": "Shell script which will be executed by `/bin/sh` after the interface is up successfully",
-      "default": ""
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of shell scripts which will be executed by `/bin/sh` after the interface is up successfully. The special string `%i` is expanded to interface name. The commands are executed in order."
     },
     "postDown": {
-      "type": "string",
-      "description": "Shell script which will be executed by `/bin/sh` after the interface is removed successfully",
-      "default": ""
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of shell scripts which will be executed by `/bin/sh` after the interface is removed successfully. The special string `%i` is expanded to interface name. The commands are executed in order."
     },
     "profile": {
       "type": "object",
