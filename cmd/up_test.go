@@ -3,15 +3,14 @@ package cmd
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/golang/mock/gomock"
 	"github.com/soracom/soratun"
-	mock_soratun "github.com/soracom/soratun/internal/mock"
 	"github.com/stretchr/testify/assert"
 	"golang.zx2c4.com/wireguard/wgctrl"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
@@ -25,9 +24,6 @@ func Test_upCmd(t *testing.T) {
 	assert.NoError(t, err)
 	imsi := "999999XXXXXXXXX"
 
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
 	serverEndpoint, _ := net.ResolveUDPAddr("udp", "192.0.2.2:22212")
 	clientPeerIPAddress := net.ParseIP("198.51.100.2")
 	_, allowedIPNet, _ := net.ParseCIDR("203.0.113.0/24")
@@ -38,39 +34,29 @@ func Test_upCmd(t *testing.T) {
 
 	arcConf, err := os.CreateTemp("", "arc.conf")
 	assert.NoError(t, err)
-	_, err = arcConf.WriteString(fmt.Sprintf(`{
-	"privateKey": "%s",
-	"publicKey": "%s",
-	"imsi":"%s",
-	"interface":"soratun0",
-	"logLevel": 2,
-	"profile": {
-		"authKey": "secret-xxx",
-		"authKeyId": "keyId-xxx",
-		"endpoint": "https://api.soracom.io"
-	}
-}`,
-		wgClientPrivateKey.String(),
-		wgClientPrivateKey.PublicKey().String(),
-		imsi,
-	))
+
+	confJSON, err := json.Marshal(map[string]interface{}{
+		"privateKey": wgClientPrivateKey.String(),
+		"publicKey":  wgClientPrivateKey.PublicKey().String(),
+		"imsi":       imsi,
+		"interface":  "soratun0",
+		"logLevel":   2,
+		"profile": map[string]string{
+			"authKey":   "secret-xxx",
+			"authKeyId": "keyId-xxx",
+			"endpoint":  "https://api.soracom.io",
+		},
+		"arcSessionStatus": map[string]interface{}{
+			"ArcServerPeerPublicKey": wgServerPrivateKey.PublicKey().String(),
+			"ArcServerEndpoint":      serverEndpoint.String(),
+			"ArcAllowedIPs":          []string{allowedIPNet.String()},
+			"ArcClientPeerIpAddress": clientPeerIPAddress.String(),
+		},
+	})
 	assert.NoError(t, err)
 
-	mockedClient := mock_soratun.NewMockSoracomClient(ctrl)
-	mockedClient.EXPECT().CreateArcSession(imsi, wgClientPrivateKey.PublicKey().String()).Return(&soratun.ArcSession{
-		ArcServerPeerPublicKey: wgServerPublicKey,
-		ArcServerEndpoint: &soratun.UDPAddr{
-			IP:   serverEndpoint.IP,
-			Port: serverEndpoint.Port,
-			Zone: serverEndpoint.Zone,
-		},
-		ArcClientPeerIpAddress: clientPeerIPAddress,
-		ArcAllowedIPs: []*soratun.IPNet{{
-			IP:   allowedIPNet.IP,
-			Mask: allowedIPNet.Mask,
-		}},
-	}, nil)
-	mockedClient.EXPECT().Verbose().Return(false)
+	_, err = arcConf.Write(confJSON)
+	assert.NoError(t, err)
 
 	cancellableCtx, cancel := context.WithCancel(context.Background())
 	ctx = cancellableCtx
