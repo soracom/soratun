@@ -52,9 +52,9 @@
       "description": "MTU for the interface",
       "default": 1420
     },
-    "persistentKeepaliveInterval": {
+    "persistentKeepalive": {
       "type": "number",
-      "description": "WireGuard `PersistentKeepaliveInterval` for the SORACOM Arc server",
+      "description": "WireGuard `PersistentKeepalive` for the SORACOM Arc server",
       "default": 60
     },
     "profile": {

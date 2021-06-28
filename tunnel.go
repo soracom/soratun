@@ -131,9 +131,9 @@ func Up(ctx context.Context, config *Config) {
 		allowedIPs = append(allowedIPs, (net.IPNet)(*v))
 	}
 
-	persistentKeepaliveInterval := 60
-	if config.PersistentKeepaliveInterval > 0 {
-		persistentKeepaliveInterval = config.PersistentKeepaliveInterval
+	persistentKeepalive := 60
+	if config.PersistentKeepalive > 0 {
+		persistentKeepalive = config.PersistentKeepalive
 	}
 
 	err = client.ConfigureDevice(iname, wgtypes.Config{
@@ -144,7 +144,7 @@ func Up(ctx context.Context, config *Config) {
 			{
 				PublicKey:                   *config.ArcSession.ArcServerPeerPublicKey.AsWgKey(),
 				Endpoint:                    (*net.UDPAddr)(config.ArcSession.ArcServerEndpoint),
-				PersistentKeepaliveInterval: duration(time.Duration(persistentKeepaliveInterval) * time.Second),
+				PersistentKeepaliveInterval: duration(time.Duration(persistentKeepalive) * time.Second),
 				ReplaceAllowedIPs:           true,
 				AllowedIPs:                  allowedIPs,
 			},

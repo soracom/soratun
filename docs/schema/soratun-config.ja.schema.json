@@ -52,9 +52,9 @@
       "description": "soratun が作成するインターフェースの MTU",
       "default": 1420
     },
-    "persistentKeepaliveInterval": {
+    "persistentKeepalive": {
       "type": "number",
-      "description": "SORACOM Arc サーバーとの接続における `PersistentKeepaliveInterval`",
+      "description": "SORACOM Arc サーバーとの接続における `PersistentKeepalive`",
       "default": 60
     },
     "profile": {

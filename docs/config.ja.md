@@ -4,19 +4,19 @@ SORACOM Arc クライアント `soratun` の設定ファイル(デフォルト `
 
 ## Properties
 
-| Property                      | Type                        | Required | Description                                                                                                                    |
-|-------------------------------|-----------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------|
-| `enableMetrics`               | boolean                     | **Yes**  | 有効にした場合、ログレベルが `error` または `verbose` の際に標準出力にメトリックスを約 60 秒毎に出力します。                   |
-| `interface`                   | string                      | **Yes**  | soratun が作成するインターフェース名。macOS でテストする場合、OS の制限のため `utun` で始まる文字列を指定してください。        |
-| `logLevel`                    | integer                     | **Yes**  | ログレベル (0: 出力無し / 1: エラーのみ出力 / 2: デバッグ情報も出力)                                                           |
-| `privateKey`                  | string                      | **Yes**  | WireGuard 秘密鍵。通常は編集しないでください。                                                                                 |
-| `publicKey`                   | string                      | **Yes**  | WireGuard 公開鍵。通常は編集しないでください。                                                                                 |
-| `additionalAllowedIPs`        | string[]                    | No       | soratun 作成時に WireGuard の AllowedIPs に追加する CIDR の配列。このネットワーク宛の通信も `soratun` 経由になります。         |
-| `arcSessionStatus`            | [object](#arcsessionstatus) | No       | SORACOM Arc 接続情報。自動的に生成または更新されますので通常は編集しないでください。                                           |
-| `mtu`                         | number                      | No       | soratun が作成するインターフェースの MTU                                                                                       |
-| `persistentKeepaliveInterval` | number                      | No       | SORACOM Arc サーバーとの接続における `PersistentKeepaliveInterval`                                                             |
-| `profile`                     | [object](#profile)          | No       | SORACOM API 接続情報。`soratun bootstrap authkey` を実行した際に保存されます。その他のブートストラップ方法では使用されません。 |
-| `simId`                       | string                      | No       | バーチャル SIM の SIM ID                                                                                                       |
+| Property               | Type                        | Required | Description                                                                                                                    |
+|------------------------|-----------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------|
+| `enableMetrics`        | boolean                     | **Yes**  | 有効にした場合、ログレベルが `error` または `verbose` の際に標準出力にメトリックスを約 60 秒毎に出力します。                   |
+| `interface`            | string                      | **Yes**  | soratun が作成するインターフェース名。macOS でテストする場合、OS の制限のため `utun` で始まる文字列を指定してください。        |
+| `logLevel`             | integer                     | **Yes**  | ログレベル (0: 出力無し / 1: エラーのみ出力 / 2: デバッグ情報も出力)                                                           |
+| `privateKey`           | string                      | **Yes**  | WireGuard 秘密鍵。通常は編集しないでください。                                                                                 |
+| `publicKey`            | string                      | **Yes**  | WireGuard 公開鍵。通常は編集しないでください。                                                                                 |
+| `additionalAllowedIPs` | string[]                    | No       | soratun 作成時に WireGuard の AllowedIPs に追加する CIDR の配列。このネットワーク宛の通信も `soratun` 経由になります。         |
+| `arcSessionStatus`     | [object](#arcsessionstatus) | No       | SORACOM Arc 接続情報。自動的に生成または更新されますので通常は編集しないでください。                                           |
+| `mtu`                  | number                      | No       | soratun が作成するインターフェースの MTU                                                                                       |
+| `persistentKeepalive`  | number                      | No       | SORACOM Arc サーバーとの接続における `PersistentKeepalive`                                                                     |
+| `profile`              | [object](#profile)          | No       | SORACOM API 接続情報。`soratun bootstrap authkey` を実行した際に保存されます。その他のブートストラップ方法では使用されません。 |
+| `simId`                | string                      | No       | バーチャル SIM の SIM ID                                                                                                       |
 
 ## arcSessionStatus
 
