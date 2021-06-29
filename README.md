@@ -1,4 +1,4 @@
-# soratun [![check](https://github.com/soracom/soratun/actions/workflows/check.yml/badge.svg)](https://github.com/soracom/soratun/actions/workflows/check.yml)
+# soratun [![check](https://github.com/soracom/soratun/actions/workflows/check.yml/badge.svg)](https://github.com/soracom/soratun/actions/workflows/check.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/soracom/soratun)](https://goreportcard.com/report/github.com/soracom/soratun) [![GoDoc](https://godoc.org/github.com/soracom/soratun?status.svg)](https://godoc.org/github.com/soracom/soratun)
 
 An easy-to-use, userspace [SORACOM Arc](https://soracom.jp/services/arc/) client powered by [wireguard-go](https://git.zx2c4.com/wireguard-go/about/). For deploying and scaling Linux servers/Raspberry Pi devices working with SORACOM platform and SORACOM Arc.
 
