@@ -227,6 +227,7 @@ func isWatchdogEnabled() bool {
 	return enabled != 0
 }
 
+// DefaultInterfaceName returns a default interface name
 func DefaultInterfaceName() string {
 	iname := "soratun0"
 	if runtime.GOOS == "darwin" {
