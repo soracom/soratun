@@ -5,6 +5,9 @@ TEST_CONTAINER_NAME=soratun-test
 TEST_CONTAINER_RESOURCE=$(TEST_CONTAINER_NAME):latest
 GOLANGCI_VERSION=1.40.1
 
+check: fmt-check test lint vet
+check-ci: fmt-check test vet
+
 $(BIN): $(SRC) go.mod
 	CGO_ENABLED=0 $(GO) build -ldflags="-s -w" -trimpath ./cmd/soratun
 
@@ -17,8 +20,12 @@ clean:
 gen:
 	go generate ./...
 
+test:
+	go test -v ./...
+
 integration-test-container:
 	docker build . -f ./devtools/wg_integ_test/Dockerfile -t $(TEST_CONTAINER_RESOURCE)
+	docker tag $(TEST_CONTAINER_RESOURCE) ghcr.io/soracom/soratun/$(TEST_CONTAINER_RESOURCE)
 
 run-integration-test-container: $(BIN) gen
 	docker run -d \
@@ -35,7 +42,7 @@ run-integration-test-container: $(BIN) gen
 		$(TEST_CONTAINER_RESOURCE)
 
 integration-test:
-	docker exec -it soratun-test bash -c 'mkdir -p /dev/net ; mknod /dev/net/tun c 10 200 ; chmod 600 /dev/net/tun; WG_INTEG_TEST=enabled go test -v ./...'
+	docker exec -it $(TEST_CONTAINER_NAME) bash -c 'mkdir -p /dev/net ; mknod /dev/net/tun c 10 200 ; chmod 600 /dev/net/tun; WG_INTEG_TEST=enabled go test -v ./...'
 
 clean-integration-test-container:
 	docker container stop $(TEST_CONTAINER_NAME)
@@ -47,15 +54,43 @@ json-schema-docs:
 
 install-dev-deps:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
-		| sh -s -- -b $(shell go env GOPATH)/bin v$(GOLANGCI_VERSION)
+		| sh -s -- -b $(shell go env GOPATH)/bin v$(GOLANGCI_VERSION) \
+		&& go install golang.org/x/tools/cmd/goimports@v0.1.4
 
 lint:
-	@golangci-lint run ./...
+	golangci-lint run ./...
 
-test:
-	@go test .
+lint-fix:
+	golangci-lint run --fix ./...
 
-# FIXME: run ci tests on GH Actions after publishing. (ref. PR#32)
-ci: install-dev-deps lint test
+vet:
+	go vet ./...
 
-.PHONY: clean clean-integration-test-container json-schema-docs install-dev-deps lint test ci
+fmt-check:
+	goimports -l *.go **/*.go | grep [^*][.]go$$; \
+	EXIT_CODE=$$?; \
+	if [ $$EXIT_CODE -eq 0 ]; then exit 1; fi \
+
+fmt:
+	goimports -w *.go **/*.go
+
+fix:
+	$(MAKE) fmt
+	$(MAKE) lint-fix
+
+github-docker-login:
+ifndef DOCKER_USER
+	@echo "[error] \$$DOCKER_USER must be specified"
+	@exit 1
+endif
+ifndef DOCKER_PSWD_FILE
+	@echo "[error] \$$DOCKER_PSWD_FILE must be specified"
+	@exit 1
+endif
+	cat $(DOCKER_PSWD_FILE) | docker login ghcr.io --username $(DOCKER_USER) --password-stdin
+
+test-docker-container-push: github-docker-login
+	docker push ghcr.io/soracom/soratun/$(TEST_CONTAINER_RESOURCE)
+
+.PHONY: clean integration-test-container clean-integration-test-container run-integration-test-container json-schema-docs install-dev-deps lint test check check-ci vet fmt fmt-check github-docker-login test-docker-container test-docker-push
+
