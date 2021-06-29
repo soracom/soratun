@@ -50,7 +50,7 @@ func bootstrapSimCmd() *cobra.Command {
 	cmd.Flags().UintVar(&baudRate, "baud-rate", 57600, "Baud rate for communication device")
 	cmd.Flags().UintVar(&dataBits, "data-bits", 8, "Data bits for communication device")
 	cmd.Flags().UintVar(&stopBits, "stop-bits", 1, "Stop bits for communication device")
-	cmd.Flags().UintVar(&parityMode, "parity-mode", 0, "Parity mode for communiation device. 0: None (default), 1: Odd, 2: Even")
+	cmd.Flags().UintVar(&parityMode, "parity-mode", 0, "Parity mode for communication device. 0: None (default), 1: Odd, 2: Even")
 	cmd.Flags().BoolVar(&disableKeyCache, "disable-key-cache", false, "Do not store authentication result to the key cache")
 	cmd.Flags().BoolVar(&clearKeyCache, "clear-key-cache", false, "Remove all items in the key cache")
 	cmd.Flags().StringVar(&kryptonCliPath, "krypton-cli-path", "/usr/local/bin/krypton-cli", "Path to krypton-cli")
