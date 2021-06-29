@@ -14,7 +14,7 @@
 ```console
 $ git clone https://github.com/soracom/soratun
 $ cd soratun
-$ make
+$ make soratun
 ```
 
 If you update configuration file (`arc.json`) format, please update relevant [JSON
