@@ -3,10 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/soracom/soratun"
-	"github.com/spf13/cobra"
 	"log"
 	"path/filepath"
+
+	"github.com/soracom/soratun"
+	"github.com/spf13/cobra"
 )
 
 func bootstrapCmd() *cobra.Command {

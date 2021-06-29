@@ -3,11 +3,12 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/soracom/soratun"
-	"github.com/spf13/cobra"
 	"log"
 	"net"
 	"os"
+
+	"github.com/soracom/soratun"
+	"github.com/spf13/cobra"
 )
 
 func configCmd() *cobra.Command {

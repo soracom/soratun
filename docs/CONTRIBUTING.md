@@ -42,6 +42,17 @@ $ make run-integration-test-container
 $ make integration-test
 ```
 
+#### Push a testing container to GitHub Registry for CI
+
+```
+$ make integration-test-container
+$ make test-docker-container-push DOCKER_USER=${your_github_user_name} DOCKER_PSWD_FILE=/path/to/your/github/token/file
+```
+
+See also: https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token
+
+This personal access token must be granted the appropriate permission to push the container.
+
 ## Release
 
 Tagging a commit and push it to the repo will create a new release with configured [GitHub action](https://github.com/soracom/soratun/actions), under the [Releases](https://github.com/soracom/soratun/releases/) section.

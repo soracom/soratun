@@ -2,10 +2,11 @@ package soratun
 
 import (
 	"fmt"
-	"golang.zx2c4.com/wireguard/device"
 	"io/ioutil"
 	"os/exec"
 	"strings"
+
+	"golang.zx2c4.com/wireguard/device"
 )
 
 // ConfigureInterface create a new network interface with given SORACOM Arc configuration. Then setup routing table for allowedIPs.

@@ -130,7 +130,6 @@ func Up(ctx context.Context, config *Config) {
 		allowedIPs = append(allowedIPs, (net.IPNet)(*v))
 	}
 
-
 	err = client.ConfigureDevice(iname, wgtypes.Config{
 		PrivateKey:   config.PrivateKey.AsWgKey(),
 		FirewallMark: nil,
@@ -165,20 +164,18 @@ func Up(ctx context.Context, config *Config) {
 			defer ticker.Stop()
 
 			for {
-				select {
-				case <-ticker.C:
-					d, err := client.Device(iname)
-					if err != nil {
-						logger.Errorf("failed to update watchdog timer to systemd")
-					} else {
-						for _, p := range d.Peers {
-							if time.Since(p.LastHandshakeTime) < watchdogTimeout {
-								_, err := daemon.SdNotify(false, daemon.SdNotifyWatchdog)
-								if err != nil {
-									logger.Errorf("failed to update watchdog timer to systemd")
-								} else {
-									logger.Verbosef("update watchdog timer")
-								}
+				<-ticker.C
+				d, err := client.Device(iname)
+				if err != nil {
+					logger.Errorf("failed to update watchdog timer to systemd")
+				} else {
+					for _, p := range d.Peers {
+						if time.Since(p.LastHandshakeTime) < watchdogTimeout {
+							_, err := daemon.SdNotify(false, daemon.SdNotifyWatchdog)
+							if err != nil {
+								logger.Errorf("failed to update watchdog timer to systemd")
+							} else {
+								logger.Verbosef("update watchdog timer")
 							}
 						}
 					}
@@ -193,15 +190,13 @@ func Up(ctx context.Context, config *Config) {
 			defer ticker.Stop()
 
 			for {
-				select {
-				case <-ticker.C:
-					d, err := client.Device(iname)
-					if err == nil {
-						for _, p := range d.Peers {
-							logger.Errorf("soratun_sent_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.TransmitBytes)
-							logger.Errorf("soratun_received_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.ReceiveBytes)
-							logger.Errorf("soratun_latest_handshake_epoch{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.LastHandshakeTime.Unix())
-						}
+				<-ticker.C
+				d, err := client.Device(iname)
+				if err == nil {
+					for _, p := range d.Peers {
+						logger.Errorf("soratun_sent_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.TransmitBytes)
+						logger.Errorf("soratun_received_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.ReceiveBytes)
+						logger.Errorf("soratun_latest_handshake_epoch{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.LastHandshakeTime.Unix())
 					}
 				}
 			}
