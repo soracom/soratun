@@ -1,4 +1,4 @@
-# soratun
+# soratun [![check](https://github.com/soracom/soratun/actions/workflows/check.yml/badge.svg)](https://github.com/soracom/soratun/actions/workflows/check.yml)
 
 An easy-to-use, userspace [SORACOM Arc](https://soracom.jp/services/arc/) client powered by [wireguard-go](https://git.zx2c4.com/wireguard-go/about/). For deploying and scaling Linux servers/Raspberry Pi devices working with SORACOM platform and SORACOM Arc.
 
