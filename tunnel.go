@@ -84,7 +84,7 @@ func Up(ctx context.Context, config *Config) {
 
 	fileUAPI, err := ipc.UAPIOpen(iname)
 	if err != nil {
-		logger.Errorf("UAPI listen error: %v", err)
+		logger.Errorf("failed to open UAPI socket: %v", err)
 		os.Exit(1)
 	}
 
