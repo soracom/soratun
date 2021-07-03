@@ -14,6 +14,7 @@ func upCmd() *cobra.Command {
 		Use:     "up",
 		Aliases: []string{"u"},
 		Short:   "Setup SORACOM Arc interface",
+		Args:    cobra.NoArgs,
 		PreRun:  initSoratun,
 		Run: func(cmd *cobra.Command, args []string) {
 			if Config.ArcSession == nil {

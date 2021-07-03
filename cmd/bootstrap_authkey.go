@@ -23,6 +23,7 @@ func bootstrapAuthKeyCmd() *cobra.Command {
 		Use:   "authkey",
 		Short: "Create standalone virtual SIM with SORACOM API AuthKey",
 		Long:  "This command will create a new virtual SIM which is not associated with any physical SIM, then create configuration for soratun. If configuration file (arc.json by default, or specified by --config flag) contains \"profile\", that information will be used. Else if insufficient or no flags is provided, the command will guide your setup through interactive wizard.",
+		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error
 			var profile *soratun.Profile

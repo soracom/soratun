@@ -12,6 +12,7 @@ func dumpWireGuardConfigCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:    "wg-config",
 		Short:  "Dump soratun configuration file as WireGuard format",
+		Args:   cobra.NoArgs,
 		PreRun: initSoratun,
 		Run: func(cmd *cobra.Command, args []string) {
 			dumpWireGuardConfig()
