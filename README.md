@@ -134,6 +134,10 @@ $ soratun up soratun0 --log-level verbose
 
 Note: Some OSes won't persist `/var/run/wireguard` during OS recycle. We have to find more good way to do this.
 
+## Shell autocompletion
+
+`soratun` will generate the autocompletion script for bash and zsh. See `soratun completion --help` for detail. The `completion` subcommand is hidden from `soratun --help`.
+
 ## TODOs
 
 More test coverage. At this moment [`cmd/up_test.go`](cmd/up_test.go) won't work.
