@@ -18,6 +18,7 @@ func versionCmd() *cobra.Command {
 		Use:     "version",
 		Aliases: []string{"v"},
 		Short:   "Show version",
+		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Printf("%s (%s)\n", Tag, Commit)
 		},

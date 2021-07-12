@@ -15,6 +15,7 @@ func configCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "config",
 		Short: "Create initial soratun configuration file without bootstrapping",
+		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			localhost := net.IPv4(127, 0, 0, 1)
 

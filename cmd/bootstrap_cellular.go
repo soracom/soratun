@@ -14,6 +14,7 @@ func bootstrapCellularCmd() *cobra.Command {
 		Use:   "cellular",
 		Short: "Create virtual SIM which is associated with current SIM with active cellular connection",
 		Long:  "This command will create a new virtual SIM which is associated with current physical SIM, then create configuration for soratun. Need active SORACOM Air for Cellular connection.",
+		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error
 

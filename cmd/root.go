@@ -31,6 +31,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&configPath, "config", "arc.json", "Specify path to SORACOM Arc client configuration file")
 
 	RootCmd.AddCommand(bootstrapCmd())
+	RootCmd.AddCommand(completionCmd())
 	RootCmd.AddCommand(configCmd())
 	RootCmd.AddCommand(dumpWireGuardConfigCmd())
 	RootCmd.AddCommand(statusCmd())

@@ -25,6 +25,7 @@ cellular Virtual SIM which is    cellular connection  Active SORACOM Air cellula
 sim      current SIM             SIM Authentication   Compatible modem/SIM card reader, and OS setup  Any          Linux
 -------- ----------------------- -------------------- ----------------------------------------------- ------------ -------------
 `,
+		Args: cobra.NoArgs,
 	}
 
 	cmd.AddCommand(bootstrapAuthKeyCmd())

@@ -15,6 +15,7 @@ func statusCmd() *cobra.Command {
 		Use:     "status",
 		Aliases: []string{"s"},
 		Short:   "Display SORACOM Arc interface status",
+		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			c, err := wgctrl.New()
 			if err != nil {

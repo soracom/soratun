@@ -30,6 +30,7 @@ func bootstrapSimCmd() *cobra.Command {
 		Use:   "sim",
 		Short: "Create virtual SIM which is associated with current SIM with SORACOM Krypton SIM authentication",
 		Long:  "This command will create a new virtual SIM which is associated with current physical SIM, then create configuration for soratun. You need working \"krypton-cli\". See https://github.com/soracom/krypton-client-go for how to install.",
+		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			_, err := bootstrap(&soratun.SimBootstrapper{
 				KryptonCliPath: kryptonCliPath,
