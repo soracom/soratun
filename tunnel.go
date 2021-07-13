@@ -264,7 +264,8 @@ func DefaultInterfaceName() string {
 }
 
 func runCommand(s string) (string, error) {
-	cmd := exec.Command("/bin/sh", "-c", s)
+	c := strings.Split(s, " ")
+	cmd := exec.Command(c[0], c[1:]...)
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
