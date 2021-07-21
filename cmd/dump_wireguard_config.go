@@ -29,12 +29,12 @@ func dumpWireGuardConfig() {
 	postDown := ""
 	if len(Config.PostUp) > 0 {
 		for _, com := range Config.PostUp {
-			postUp = fmt.Sprintf("%sPostUp = %s\n", postUp, com)
+			postUp = fmt.Sprintf("%sPostUp = %s\n", postUp, strings.Join(com, " "))
 		}
 	}
 	if len(Config.PostDown) > 0 {
 		for _, com := range Config.PostDown {
-			postDown = fmt.Sprintf("%sPostDown = %s\n", postDown, com)
+			postDown = fmt.Sprintf("%sPostDown = %s\n", postDown, strings.Join(com, " "))
 		}
 	}
 
