@@ -136,8 +136,11 @@ func Up(ctx context.Context, config *Config) {
 		ReplacePeers: true,
 		Peers: []wgtypes.PeerConfig{
 			{
-				PublicKey:                   *config.ArcSession.ArcServerPeerPublicKey.AsWgKey(),
-				Endpoint:                    (*net.UDPAddr)(config.ArcSession.ArcServerEndpoint),
+				PublicKey: *config.ArcSession.ArcServerPeerPublicKey.AsWgKey(),
+				Endpoint: &net.UDPAddr{
+					IP:   config.ArcSession.ArcServerEndpoint.IP,
+					Port: config.ArcSession.ArcServerEndpoint.Port,
+				},
 				PersistentKeepaliveInterval: duration(time.Duration(config.PersistentKeepalive) * time.Second),
 				ReplaceAllowedIPs:           true,
 				AllowedIPs:                  allowedIPs,
