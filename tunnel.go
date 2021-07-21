@@ -158,6 +158,10 @@ func Up(ctx context.Context, config *Config) {
 
 	if len(config.PostUp) > 0 {
 		for i, com := range config.PostUp {
+			if len(com) == 0 || com[0] == "" {
+				continue
+			}
+
 			command := replaceInterfaceName(com, iname)
 			logger.Verbosef("executing PostUp(%d): %s", i, command)
 			result, err := runCommand(command)
@@ -233,6 +237,10 @@ func Up(ctx context.Context, config *Config) {
 
 	if len(config.PostDown) > 0 {
 		for i, com := range config.PostDown {
+			if len(com) == 0 || com[0] == "" {
+				continue
+			}
+
 			command := replaceInterfaceName(com, iname)
 			logger.Verbosef("executing PostDown(%d): %s", i, command)
 			result, err := runCommand(command)
