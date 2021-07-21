@@ -158,7 +158,7 @@ func Up(ctx context.Context, config *Config) {
 
 	if len(config.PostUp) > 0 {
 		for i, com := range config.PostUp {
-			command := strings.Replace(com, "%i", iname, -1)
+			command := replaceInterfaceName(com, iname)
 			logger.Verbosef("executing PostUp(%d): %s", i, command)
 			result, err := runCommand(command)
 			if err != nil {
@@ -233,7 +233,7 @@ func Up(ctx context.Context, config *Config) {
 
 	if len(config.PostDown) > 0 {
 		for i, com := range config.PostDown {
-			command := strings.Replace(com, "%i", iname, -1)
+			command := replaceInterfaceName(com, iname)
 			logger.Verbosef("executing PostDown(%d): %s", i, command)
 			result, err := runCommand(command)
 			if err != nil {
@@ -262,13 +262,20 @@ func DefaultInterfaceName() string {
 	return iname
 }
 
-func runCommand(s string) (string, error) {
-	c := strings.Split(s, " ")
+func runCommand(c []string) (string, error) {
 	result, err := exec.Command(c[0], c[1:]...).CombinedOutput()
 
 	if err != nil {
-		return "", fmt.Errorf("error while running \"%s\"", s)
+		return "", fmt.Errorf("error while running \"%s\"", strings.Join(c, " "))
 	}
 
 	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
+}
+
+func replaceInterfaceName(command []string, iname string) []string {
+	var replaced []string
+	for _, s := range command {
+		replaced = append(replaced, strings.Replace(s, "%i", iname, -1))
+	}
+	return replaced
 }

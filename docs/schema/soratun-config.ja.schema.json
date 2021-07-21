@@ -58,14 +58,24 @@
       "default": 60
     },
     "postUp": {
-      "type": "string",
-      "description": "仮想インターフェース作成後に実行されるシェルスクリプトの配列。`/bin/sh` で実行されます。`%i` はインターフェース名に置換されます。記載した順序で実行されます。",
-      "default": ""
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "strings"
+        }
+      },
+      "description": "仮想インターフェース作成後に実行されるコマンドの配列。1 つのコマンドは `[\"executable\", \"param1\", \"param2\"]` の形式で指定してください。`%i` はインターフェース名に置換されます。記載した順序で実行されます。例: `\"postUp\": [ [ \"/bin/echo\", \"postUp\", \"%i\" ], [ \"echo\", \"%i\" ] ]`"
     },
     "postDown": {
-      "type": "string",
-      "description": "仮想インターフェース削除後に実行されるシェルスクリプト。`/bin/sh` で実行されます。`%i` はインターフェース名に置換されます。記載した順序で実行されます。",
-      "default": ""
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "strings"
+        }
+      },
+      "description": "仮想インターフェース削除後に実行されるコマンドの配列。1 つのコマンドは `[\"executable\", \"param1\", \"param2\"]` の形式で指定してください。`%i` はインターフェース名に置換されます。記載した順序で実行されます。例: `\"postDown\": [ [ \"/bin/echo\", \"postUp\", \"%i\" ], [ \"echo\", \"%i\" ] ]`"
     },
     "profile": {
       "type": "object",

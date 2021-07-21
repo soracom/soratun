@@ -38,14 +38,14 @@ type Config struct {
 	Interface string `json:"interface"`
 	// AdditionalAllowedIPs holds a set of WireGuard allowed IPs in addition to the list which will get while creating Arc session.
 	AdditionalAllowedIPs []*IPNet `json:"additionalAllowedIPs,omitempty"`
-	// Mtu of the interface
+	// Mtu of the interface.
 	Mtu int `json:"mtu,omitempty"`
-	// WireGuard PersistentKeepalive
+	// WireGuard PersistentKeepalive parameter.
 	PersistentKeepalive int `json:"persistentKeepalive,omitempty"`
-	// PostUp will be executed after the interface is up successfully
-	PostUp []string `json:"postUp,omitempty"`
-	// PostDown will be executed after the interface is removed successfully
-	PostDown []string `json:"postDown,omitempty"`
+	// PostUp is array of commands which will be executed after the interface is up successfully.
+	PostUp [][]string `json:"postUp,omitempty"`
+	// PostDown is array of commands which will be executed after the interface is removed successfully.
+	PostDown [][]string `json:"postDown,omitempty"`
 	// Profile is for SORACOM API access.
 	Profile *Profile `json:"profile,omitempty"`
 	// ArcSession holds connection information provided from SORACOM Arc server.
