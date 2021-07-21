@@ -6,7 +6,6 @@ package soratun
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net"
 	"os"
@@ -265,20 +264,10 @@ func DefaultInterfaceName() string {
 
 func runCommand(s string) (string, error) {
 	c := strings.Split(s, " ")
-	cmd := exec.Command(c[0], c[1:]...)
+	result, err := exec.Command(c[0], c[1:]...).CombinedOutput()
 
-	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return "", fmt.Errorf("error while setting up \"%s\"", s)
-	}
-
-	if err := cmd.Start(); err != nil {
-		return "", fmt.Errorf("error while starting \"%s\" %s", s, err)
-	}
-
-	result, err := ioutil.ReadAll(stdout)
-	if err != nil {
-		return "", fmt.Errorf("error while reading output from \"%s\"", s)
+		return "", fmt.Errorf("error while running \"%s\"", s)
 	}
 
 	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
