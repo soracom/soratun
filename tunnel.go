@@ -167,6 +167,8 @@ func Up(ctx context.Context, config *Config) {
 			result, err := runCommand(command)
 			if err != nil {
 				logger.Errorf("failed to do PostUp(%d): %s\n", i, err)
+				d.Close()
+				os.Exit(1)
 			}
 			logger.Verbosef("PostUp(%d) response: %s", i, result)
 		}
@@ -246,6 +248,7 @@ func Up(ctx context.Context, config *Config) {
 			result, err := runCommand(command)
 			if err != nil {
 				logger.Errorf("failed to do PostDown(%d): %s\n", i, err)
+				os.Exit(1)
 			}
 			logger.Verbosef("PostDown(%d) response: %s", i, result)
 		}
