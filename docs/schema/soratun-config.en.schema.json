@@ -57,6 +57,26 @@
       "description": "WireGuard `PersistentKeepalive` for the SORACOM Arc server",
       "default": 60
     },
+    "postUp": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "strings"
+        }
+      },
+      "description": "Array of shell scripts after the interface is up successfully. A script should be in the form `[\"executable\", \"param1\", \"param2\"]`. The special string `%i` is expanded to interface name. The commands are executed in order. For example: `\"postUp\": [ [ \"/bin/echo\", \"postUp\", \"%i\" ], [ \"echo\", \"%i\" ] ]`"
+    },
+    "postDown": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "strings"
+        }
+      },
+      "description": "Array of shell scripts after the interface is removed successfully. A script should be in the form `[\"executable\", \"param1\", \"param2\"]`. The special string `%i` is expanded to interface name. The commands are executed in order. For example: `\"postDown\": [ [ \"/bin/echo\", \"postUp\", \"%i\" ], [ \"echo\", \"%i\" ] ]`"
+    },
     "profile": {
       "type": "object",
       "properties": {

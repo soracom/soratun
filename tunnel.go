@@ -9,8 +9,10 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/exec"
 	"os/signal"
 	"runtime"
+	"strings"
 	"syscall"
 	"time"
 
@@ -85,12 +87,14 @@ func Up(ctx context.Context, config *Config) {
 	fileUAPI, err := ipc.UAPIOpen(iname)
 	if err != nil {
 		logger.Errorf("UAPI listen error: %v", err)
+		d.Close()
 		os.Exit(1)
 	}
 
 	uapi, err := ipc.UAPIListen(iname, fileUAPI)
 	if err != nil {
 		logger.Errorf("failed to listen on UAPI socket: %v", err)
+		d.Close()
 		os.Exit(1)
 	}
 	defer func() {
@@ -116,6 +120,7 @@ func Up(ctx context.Context, config *Config) {
 	client, err := wgctrl.New()
 	if err != nil {
 		logger.Errorf("failed to open wgctrl: %v", err)
+		d.Close()
 		os.Exit(1)
 	}
 
@@ -146,12 +151,32 @@ func Up(ctx context.Context, config *Config) {
 	})
 	if err != nil {
 		logger.Errorf("failed to configure new device %s: %v", iname, err)
+		d.Close()
 		os.Exit(1)
 	}
 
 	if err = ConfigureInterface(iname, config); err != nil {
 		logger.Errorf("error: %s\n", err)
+		d.Close()
 		os.Exit(1)
+	}
+
+	if len(config.PostUp) > 0 {
+		for i, com := range config.PostUp {
+			if len(com) == 0 || com[0] == "" {
+				continue
+			}
+
+			command := replaceInterfaceName(com, iname)
+			logger.Verbosef("executing PostUp(%d): %s", i, command)
+			result, err := runCommand(command)
+			if err != nil {
+				logger.Errorf("failed to do PostUp(%d): %s\n", i, err)
+				d.Close()
+				os.Exit(1)
+			}
+			logger.Verbosef("PostUp(%d) response: %s", i, result)
+		}
 	}
 
 	if isWatchdogEnabled() {
@@ -217,6 +242,23 @@ func Up(ctx context.Context, config *Config) {
 
 	d.Close()
 
+	if len(config.PostDown) > 0 {
+		for i, com := range config.PostDown {
+			if len(com) == 0 || com[0] == "" {
+				continue
+			}
+
+			command := replaceInterfaceName(com, iname)
+			logger.Verbosef("executing PostDown(%d): %s", i, command)
+			result, err := runCommand(command)
+			if err != nil {
+				logger.Errorf("failed to do PostDown(%d): %s\n", i, err)
+				os.Exit(1)
+			}
+			logger.Verbosef("PostDown(%d) response: %s", i, result)
+		}
+	}
+
 	logger.Verbosef("shutting down")
 }
 
@@ -234,4 +276,27 @@ func DefaultInterfaceName() string {
 		iname = "utun"
 	}
 	return iname
+}
+
+func runCommand(c []string) (string, error) {
+	result, err := exec.Command(c[0], c[1:]...).CombinedOutput()
+
+	if err != nil {
+		return "", fmt.Errorf(
+			"error while running \"%s\" with %s, output: '%s'",
+			strings.Join(c, " "),
+			err,
+			strings.TrimSpace(string(result)),
+		)
+	}
+
+	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
+}
+
+func replaceInterfaceName(command []string, iname string) []string {
+	var replaced []string
+	for _, s := range command {
+		replaced = append(replaced, strings.Replace(s, "%i", iname, -1))
+	}
+	return replaced
 }

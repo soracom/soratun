@@ -2,9 +2,6 @@ package soratun
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os/exec"
-	"strings"
 
 	"golang.zx2c4.com/wireguard/device"
 )
@@ -16,7 +13,7 @@ func ConfigureInterface(iname string, config *Config) error {
 		fmt.Sprintf("(%s) ", iname),
 	)
 
-	command := fmt.Sprintf("sudo ifconfig %s %s %s", iname, config.ArcSession.ArcClientPeerIpAddress, config.ArcSession.ArcClientPeerIpAddress)
+	command := []string{"sudo", "ifconfig", iname, config.ArcSession.ArcClientPeerIpAddress.String(), config.ArcSession.ArcClientPeerIpAddress.String()}
 	logger.Verbosef("assign IP address: %s", command)
 	_, err := runCommand(command)
 	if err != nil {
@@ -26,9 +23,9 @@ func ConfigureInterface(iname string, config *Config) error {
 	for _, allowedIP := range config.ArcSession.ArcAllowedIPs {
 		prefix, _ := allowedIP.Mask.Size()
 		if prefix == 32 {
-			command = fmt.Sprintf("sudo route add -host %s -interface %s", allowedIP.IP, iname)
+			command = []string{"sudo", "route", "add", "-host", allowedIP.IP.String(), "-interface", iname}
 		} else {
-			command = fmt.Sprintf("sudo route add -net %s/%d -interface %s", allowedIP.IP, prefix, iname)
+			command = []string{"sudo", "route", "add", "-net", fmt.Sprintf("%s/%d", allowedIP.IP, prefix), "-interface", iname}
 		}
 		logger.Verbosef("update routing table: %s", command)
 		result, err := runCommand(command)
@@ -38,24 +35,4 @@ func ConfigureInterface(iname string, config *Config) error {
 		logger.Verbosef("%s", result)
 	}
 	return nil
-}
-
-func runCommand(s string) (string, error) {
-	cmd := exec.Command("/bin/sh", "-c", s)
-
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return "", fmt.Errorf("error while setting up \"%s\"", s)
-	}
-
-	if err := cmd.Start(); err != nil {
-		return "", fmt.Errorf("error while starting \"%s\" %s", s, err)
-	}
-
-	result, err := ioutil.ReadAll(stdout)
-	if err != nil {
-		return "", fmt.Errorf("error while reading output from \"%s\"", s)
-	}
-
-	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
 }
