@@ -277,7 +277,12 @@ func runCommand(c []string) (string, error) {
 	result, err := exec.Command(c[0], c[1:]...).CombinedOutput()
 
 	if err != nil {
-		return "", fmt.Errorf("error while running \"%s\"", strings.Join(c, " "))
+		return "", fmt.Errorf(
+			"error while running \"%s\" with %s, output: '%s'",
+			strings.Join(c, " "),
+			err,
+			strings.TrimSpace(string(result)),
+		)
 	}
 
 	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
