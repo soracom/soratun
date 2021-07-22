@@ -87,12 +87,14 @@ func Up(ctx context.Context, config *Config) {
 	fileUAPI, err := ipc.UAPIOpen(iname)
 	if err != nil {
 		logger.Errorf("UAPI listen error: %v", err)
+		d.Close()
 		os.Exit(1)
 	}
 
 	uapi, err := ipc.UAPIListen(iname, fileUAPI)
 	if err != nil {
 		logger.Errorf("failed to listen on UAPI socket: %v", err)
+		d.Close()
 		os.Exit(1)
 	}
 	defer func() {
@@ -118,6 +120,7 @@ func Up(ctx context.Context, config *Config) {
 	client, err := wgctrl.New()
 	if err != nil {
 		logger.Errorf("failed to open wgctrl: %v", err)
+		d.Close()
 		os.Exit(1)
 	}
 
@@ -148,11 +151,13 @@ func Up(ctx context.Context, config *Config) {
 	})
 	if err != nil {
 		logger.Errorf("failed to configure new device %s: %v", iname, err)
+		d.Close()
 		os.Exit(1)
 	}
 
 	if err = ConfigureInterface(iname, config); err != nil {
 		logger.Errorf("error: %s\n", err)
+		d.Close()
 		os.Exit(1)
 	}
 
