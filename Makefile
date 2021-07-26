@@ -9,7 +9,7 @@ check: fmt-check test lint vet
 check-ci: fmt-check test vet
 
 $(BIN): $(SRC) go.mod
-	CGO_ENABLED=0 $(GO) build -ldflags="-s -w" -trimpath ./cmd/soratun
+	CGO_ENABLED=0 $(GO) build -ldflags='-s -w -X "github.com/soracom/soratun/internal.Revision=$(shell git rev-parse HEAD)" -X "github.com/soracom/soratun/internal.Version=$(shell git describe --tags $$(git rev-list --tags --max-count=1))"' -trimpath ./cmd/soratun
 
 snapshot: json-schema-docs
 	which goreleaser && goreleaser --snapshot --skip-publish --rm-dist
