@@ -30,8 +30,9 @@ func configCmd() *cobra.Command {
 				ArcSession: &soratun.ArcSession{
 					ArcServerPeerPublicKey: soratun.Key{},
 					ArcServerEndpoint: &soratun.UDPAddr{
-						IP:   localhost,
-						Port: 11010,
+						IP:          localhost,
+						Port:        11010,
+						RawEndpoint: []byte("localhost:11010"),
 					},
 					ArcAllowedIPs: []*soratun.IPNet{{
 						IP:   net.IPv4(100, 127, 0, 0),

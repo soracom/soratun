@@ -12,12 +12,17 @@ import (
 
 const arcServerEndpointDefaultPort string = "11010"
 
+// UDPAddr represents the UDP address with keeping original endpoint.
+type UDPAddr struct {
+	IP          net.IP
+	Port        int
+	RawEndpoint []byte
+}
+
 // aliases to add custom un/marshaler to each types.
 type (
 	// Key is an alias for wgtypes.Key.
 	Key wgtypes.Key
-	// UDPAddr is an alias for net.UDPAddr.
-	UDPAddr net.UDPAddr
 	// IPNet is an alias for net.IPNet.
 	IPNet net.IPNet
 )
@@ -130,12 +135,16 @@ func (a *UDPAddr) UnmarshalText(text []byte) error {
 	}
 
 	a.IP, a.Port = ip, port
+	a.RawEndpoint = text
 	return nil
 }
 
 // MarshalText converts struct to a string.
 func (a *UDPAddr) MarshalText() ([]byte, error) {
-	return []byte(fmt.Sprintf("%s:%d", a.IP, a.Port)), nil
+	if len(a.RawEndpoint) <= 0 {
+		return []byte(fmt.Sprintf("%s:%d", a.IP, a.Port)), nil
+	}
+	return a.RawEndpoint, nil
 }
 
 // UnmarshalText converts a byte array into IPNet. UnmarshalText returns error if invalid CIDR is provided.
