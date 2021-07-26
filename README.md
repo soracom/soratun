@@ -140,7 +140,7 @@ Note: Some OSes won't persist `/var/run/wireguard` during OS recycle. We have to
 
 ## TODOs
 
-More test coverage. At this moment [`cmd/up_test.go`](cmd/up_test.go) won't work.
+More test coverage.
 
 ## License
 
