@@ -20,8 +20,8 @@ builds:
       - -trimpath
     ldflags:
       - -s -w
-      - -X 'github.com/soracom/soratun/cmd.Commit={{.ShortCommit}}'
-      - -X 'github.com/soracom/soratun/cmd.Tag={{.Tag}}'
+      - -X 'github.com/soracom/soratun/internal.Revision={{.Commit}}'
+      - -X 'github.com/soracom/soratun/internal.Version={{.Version}}'
 checksum:
   name_template: "checksums.txt"
 snapshot:
