@@ -9,6 +9,8 @@ import (
 	"net/http/httputil"
 	"os"
 	"strings"
+
+	"github.com/soracom/soratun/internal"
 )
 
 // A SoracomClient represents an API client for SORACOM API. See
@@ -218,6 +220,7 @@ func (c *DefaultSoracomClient) makeRequest(params *apiParams) (*http.Request, er
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-Soracom-Lang", "en")
+	req.Header.Set("User-Agent", internal.UserAgent)
 	if c.apiKey != "" {
 		req.Header.Set("X-Soracom-Api-Key", c.apiKey)
 	}

@@ -9,6 +9,8 @@ import (
 	"net/http/httputil"
 	"os"
 	"strings"
+
+	"github.com/soracom/soratun/internal"
 )
 
 // A SoracomKryptonClient represents a maybe-over-complicated API client for SORACOM Krypton Provisioning API. See
@@ -116,6 +118,7 @@ func (c *DefaultSoracomKryptonClient) makeRequest(params *apiParams) (*http.Requ
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("X-Soracom-Lang", "en")
+	req.Header.Set("User-Agent", internal.UserAgent)
 	return req, nil
 }
 
