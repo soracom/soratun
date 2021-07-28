@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e
-	github.com/golang/mock v1.5.0
+	github.com/golang/mock v1.6.0
 	github.com/lunixbochs/vtclean v1.0.0 // indirect
 	github.com/manifoldco/promptui v0.8.0
 	github.com/mattn/go-colorable v0.1.8 // indirect
