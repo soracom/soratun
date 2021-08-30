@@ -1,6 +1,6 @@
 module github.com/soracom/soratun
 
-go 1.16
+go 1.17
 
 require (
 	github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e
