@@ -31,7 +31,7 @@
     },
     "enableMetrics": {
       "type": "boolean",
-      "description": "Enable metrics logging every 60 seconds, if logLevel is error (1) or verbose (2)",
+      "description": "Enable metrics logging every 60 seconds, if logLevel is verbose (2)",
       "default": true
     },
     "interface": {
@@ -116,7 +116,6 @@
         },
         "arcServerEndpoint": {
           "type": "string",
-          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+:[0-9]+$",
           "description": "A UDP endpoint of the SORACOM Arc server in `ip or hostname:port` format"
         },
         "arcClientPeerIpAddress": {
