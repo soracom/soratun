@@ -31,7 +31,7 @@
     },
     "enableMetrics": {
       "type": "boolean",
-      "description": "有効にした場合、ログレベルが `error` または `verbose` の際に標準出力にメトリックスを約 60 秒毎に出力します。",
+      "description": "有効にした場合、ログレベルが `verbose` の際に標準出力にメトリックスを約 60 秒毎に出力します。",
       "default": true
     },
     "interface": {
@@ -116,7 +116,6 @@
         },
         "arcServerEndpoint": {
           "type": "string",
-          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+:[0-9]+$",
           "description": "SORACOM Arc サーバーの UDP エンドポイント (`IP アドレスまたはホスト名:ポート番号`)"
         },
         "arcClientPeerIpAddress": {
