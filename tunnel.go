@@ -222,9 +222,9 @@ func Up(ctx context.Context, config *Config) {
 				d, err := client.Device(iname)
 				if err == nil {
 					for _, p := range d.Peers {
-						logger.Errorf("soratun_sent_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.TransmitBytes)
-						logger.Errorf("soratun_received_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.ReceiveBytes)
-						logger.Errorf("soratun_latest_handshake_epoch{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.LastHandshakeTime.Unix())
+						logger.Verbosef("soratun_sent_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.TransmitBytes)
+						logger.Verbosef("soratun_received_bytes_total{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.ReceiveBytes)
+						logger.Verbosef("soratun_latest_handshake_epoch{simId=\"%s\",interface=\"%s\",endpoint=\"%s:%d\"} %d", config.SimId, d.Name, p.Endpoint.IP, p.Endpoint.Port, p.LastHandshakeTime.Unix())
 					}
 				}
 			}
