@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 // Package soratun implements userspace SORACOM Arc client.
@@ -9,10 +10,8 @@ import (
 	"log"
 	"net"
 	"os"
-	"os/exec"
 	"os/signal"
 	"runtime"
-	"strings"
 	"syscall"
 	"time"
 
@@ -32,19 +31,6 @@ import (
 // As of golang.zx2c4.com/wireguard v0.0.0-20210604143328-f9b48a961cd2, it will be 120 - 10 - 5 = 105 seconds.
 // Added 5 seconds without any concrete theory
 var watchdogTimeout = device.RekeyAfterTime - device.KeepaliveTimeout - device.RekeyTimeout + 5*time.Second
-
-const (
-	// LogLevelVerbose is an alias for WireGuard device logger equivalent.
-	LogLevelVerbose = device.LogLevelVerbose
-	// LogLevelError is an alias for WireGuard device logger equivalent.
-	LogLevelError = device.LogLevelError
-	// LogLevelSilent is an alias for WireGuard device logger equivalent.
-	LogLevelSilent = device.LogLevelSilent
-	// DefaultPersistentKeepaliveInterval defines WireGuard persistent keepalive interval to SORACOM Arc.
-	DefaultPersistentKeepaliveInterval = 60
-	// DefaultMTU is MTU for the configured interface.
-	DefaultMTU = device.DefaultMTU
-)
 
 // Up ups new SORACOM Arc tunnel with given ArcSession.
 func Up(ctx context.Context, config *Config) {
@@ -279,27 +265,4 @@ func DefaultInterfaceName() string {
 		iname = "utun"
 	}
 	return iname
-}
-
-func runCommand(c []string) (string, error) {
-	result, err := exec.Command(c[0], c[1:]...).CombinedOutput()
-
-	if err != nil {
-		return "", fmt.Errorf(
-			"error while running \"%s\" with %s, output: '%s'",
-			strings.Join(c, " "),
-			err,
-			strings.TrimSpace(string(result)),
-		)
-	}
-
-	return fmt.Sprintf("'%s'\n", strings.TrimSpace(string(result))), nil
-}
-
-func replaceInterfaceName(command []string, iname string) []string {
-	var replaced []string
-	for _, s := range command {
-		replaced = append(replaced, strings.Replace(s, "%i", iname, -1))
-	}
-	return replaced
 }
