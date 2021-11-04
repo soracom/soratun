@@ -27,7 +27,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/net v0.0.0-20211101193420-4a448f8816b3 // indirect
 	golang.org/x/sys v0.0.0-20211103235746-7861aae1554b // indirect
-	golang.zx2c4.com/wireguard v0.0.0-20211030003956-52704c4b9288
+	golang.zx2c4.com/wireguard v0.0.20201121
 	golang.zx2c4.com/wireguard/wgctrl v0.0.0-20211027115401-c9b1ec1aa6d8
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
