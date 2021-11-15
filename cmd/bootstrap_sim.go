@@ -35,7 +35,7 @@ func bootstrapSimCmd() *cobra.Command {
 			_, err := bootstrap(&soratun.SimBootstrapper{
 				KryptonCliPath: kryptonCliPath,
 				Arguments:      buildKryptonCliArguments(),
-			})
+			}, true)
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
 			}

@@ -20,7 +20,7 @@ func bootstrapCellularCmd() *cobra.Command {
 
 			_, err = bootstrap(&soratun.CellularBootstrapper{
 				Endpoint: kryptonCellularEndpoint,
-			})
+			}, true)
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
 			}

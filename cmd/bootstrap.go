@@ -35,29 +35,37 @@ sim      current SIM             SIM Authentication   Compatible modem/SIM card 
 	return cmd
 }
 
-func bootstrap(bootstrapper soratun.Bootstrapper) (*soratun.Config, error) {
-	// if current config exists, pass it to the bootstrapper to merge if applicable
-	currentConfig, _ := readConfig(configPath)
+// bootstrap do bootstrap with specified bootstrapper. If persist is set to true, save it to the path specified with "--config" flag
+func bootstrap(bootstrapper soratun.Bootstrapper, persist bool) (*soratun.Config, error) {
+	var currentConfig *soratun.Config = nil
+
+	if persist {
+		// if current config exists, pass it to the bootstrapper to merge if applicable
+		currentConfig, _ = readConfig(configPath)
+	}
+
 	config, err := bootstrapper.Execute(currentConfig)
 	if err != nil {
 		return nil, err
 	}
 
-	b, err := json.MarshalIndent(config, "", "  ")
-	if err != nil {
-		return nil, err
-	}
+	if persist {
+		b, err := json.MarshalIndent(config, "", "  ")
+		if err != nil {
+			return nil, err
+		}
 
-	err = writeConfigurationToFile(string(b))
-	if err != nil {
-		return nil, err
-	}
+		err = writeConfigurationToFile(string(b))
+		if err != nil {
+			return nil, err
+		}
 
-	if config.SimId != "" {
-		fmt.Printf("Virtual subscriber SIM ID: %s\n", config.SimId)
-	}
+		if config.SimId != "" {
+			fmt.Printf("Virtual subscriber SIM ID: %s\n", config.SimId)
+		}
 
-	printConfigurationFilePath()
+		printConfigurationFilePath()
+	}
 
 	return config, nil
 }
