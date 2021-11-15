@@ -18,8 +18,6 @@ func bootstrapCellularCmd() *cobra.Command {
 		Long:  "This command will create a new virtual SIM which is associated with current physical SIM, then create configuration for soratun. Need active SORACOM Air for Cellular connection.",
 		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			//var err error
-
 			config, err := bootstrap(&soratun.CellularBootstrapper{
 				Endpoint: kryptonCellularEndpoint,
 			}, !stdout)
@@ -39,8 +37,7 @@ func bootstrapCellularCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&kryptonCellularEndpoint, "endpoint", "https://krypton.soracom.io:8036", "Specify SORACOM Krypton Provisioning API endpoint.")
-
-	cmd.Flags().BoolVar(&stdout, "stdout", false, "dump configuration to stdout")
+	cmd.Flags().BoolVar(&stdout, "stdout", false, "dump configuration to stdout, ignoring --config setting")
 
 	return cmd
 }

@@ -66,8 +66,7 @@ func bootstrapSimCmd() *cobra.Command {
 	cmd.Flags().BoolVar(&disableKeyCache, "disable-key-cache", false, "Do not store authentication result to the key cache")
 	cmd.Flags().BoolVar(&clearKeyCache, "clear-key-cache", false, "Remove all items in the key cache")
 	cmd.Flags().StringVar(&kryptonCliPath, "krypton-cli-path", "/usr/local/bin/krypton-cli", "Path to krypton-cli")
-
-	cmd.Flags().BoolVar(&stdout, "stdout", false, "dump configuration to stdout")
+	cmd.Flags().BoolVar(&stdout, "stdout", false, "dump configuration to stdout, ignoring --config setting")
 
 	return cmd
 }
