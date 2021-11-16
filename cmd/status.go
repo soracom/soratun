@@ -62,7 +62,6 @@ func printDevice(d *wgtypes.Device) {
 		d.Name,
 		d.Type.String(),
 		d.PublicKey.String(),
-		//d.PrivateKey.String(),
 		d.ListenPort)
 }
 
