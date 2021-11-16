@@ -55,6 +55,8 @@ func (b *SimBootstrapper) Execute(config *Config) (*Config, error) {
 		return nil, fmt.Errorf("error while reading response from krypton-cli: %s\nkrypton-cli output:\n-----\n%s", err, stdout.String())
 	}
 
+	// Since soratun.ArcSession marshaler omits ArcClientPeerPrivateKey, we can simply and safely marshal response from
+	// Krypton CLI, and print it to stdout.
 	t, err := json.Marshal(&arcSession)
 	if err != nil {
 		return nil, fmt.Errorf("error while marshaling response from krypton-cli: %s", err)
