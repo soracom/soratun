@@ -79,12 +79,12 @@ type SimProfile struct {
 func NewDefaultSoracomClient(p Profile) (SoracomClient, error) {
 	authKeyId := p.AuthKeyID
 	if authKeyId == "" || !strings.HasPrefix(authKeyId, "keyId-") {
-		return nil, fmt.Errorf("invalid AuthKeyId \"%s\". It must starts with \"keyId-\"", authKeyId)
+		return nil, fmt.Errorf("invalid AuthKeyId is provided. It must starts with \"keyId-\"")
 	}
 
 	authKey := p.AuthKey
 	if authKey == "" || !strings.HasPrefix(authKey, "secret-") {
-		return nil, fmt.Errorf("invalid AuthKey \"%s\". It must starts with \"secret-\"", authKey)
+		return nil, fmt.Errorf("invalid AuthKey is provided. It must starts with \"secret-\"")
 	}
 
 	endpoint := p.Endpoint
