@@ -49,13 +49,17 @@ func (b *SimBootstrapper) Execute(config *Config) (*Config, error) {
 		log.Fatalf("Error while running %s: %s\n%s", b.KryptonCliPath, err, &stderr)
 	}
 
-	fmt.Printf("Got response from %s: %s\n", b.KryptonCliPath, stdout.String())
-
 	var arcSession ArcSession
 	err = json.Unmarshal(stdout.Bytes(), &arcSession)
 	if err != nil {
 		return nil, fmt.Errorf("error while reading response from krypton-cli: %s\nkrypton-cli output:\n-----\n%s", err, stdout.String())
 	}
+
+	t, err := json.Marshal(&arcSession)
+	if err != nil {
+		return nil, fmt.Errorf("error while marshaling response from krypton-cli: %s", err)
+	}
+	fmt.Printf("Got response from %s: %s\n", b.KryptonCliPath, t)
 
 	config.PrivateKey = arcSession.ArcClientPeerPrivateKey
 	config.PublicKey = (Key)(arcSession.ArcClientPeerPrivateKey.AsWgKey().PublicKey())
