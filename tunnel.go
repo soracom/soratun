@@ -1,4 +1,4 @@
-// +build !windows
+//go:build !windows
 
 // Package soratun implements userspace SORACOM Arc client.
 package soratun
