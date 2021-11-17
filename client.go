@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
-	"os"
 	"strings"
 
 	"github.com/soracom/soratun/internal"
@@ -196,10 +195,10 @@ func (c *DefaultSoracomClient) callAPI(params *apiParams) (*http.Response, error
 	}
 
 	if c.Verbose() {
-		fmt.Fprintln(os.Stderr, "--- Request dump ---------------------------------")
+		println("--- Request dump ---------------------------------")
 		r, _ := httputil.DumpRequest(req, true)
-		fmt.Fprintf(os.Stderr, "%s\n", r)
-		fmt.Fprintln(os.Stderr, "--- End of request dump --------------------------")
+		println(r)
+		println("--- End of request dump --------------------------")
 	}
 	res, err := c.doRequest(req)
 	return res, err
@@ -237,10 +236,10 @@ func (c *DefaultSoracomClient) doRequest(req *http.Request) (*http.Response, err
 	}
 
 	if c.Verbose() && res != nil {
-		fmt.Fprintln(os.Stderr, "--- Response dump --------------------------------")
+		println("--- Response dump --------------------------------")
 		r, _ := httputil.DumpResponse(res, true)
-		fmt.Fprintf(os.Stderr, "%s\n", r)
-		fmt.Fprintln(os.Stderr, "--- End of response dump -------------------------")
+		println(r)
+		println("--- End of response dump -------------------------")
 	}
 
 	if res.StatusCode >= http.StatusBadRequest {

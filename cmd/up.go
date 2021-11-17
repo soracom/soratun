@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -22,9 +21,9 @@ func upCmd() *cobra.Command {
 			}
 
 			if v := os.Getenv("SORACOM_VERBOSE"); v != "" {
-				fmt.Println("--- WireGuard configuration ----------------------")
-				dumpWireGuardConfig(true)
-				fmt.Println("--- End of WireGuard configuration ---------------")
+				println("--- WireGuard configuration ----------------------")
+				dumpWireGuardConfig(true, os.Stderr)
+				println("--- End of WireGuard configuration ---------------")
 			}
 
 			soratun.Up(ctx, Config)

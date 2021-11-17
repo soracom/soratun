@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -23,6 +24,7 @@ var (
 	disableKeyCache            bool
 	clearKeyCache              bool
 	kryptonCliPath             string
+	stdout                     bool
 )
 
 func bootstrapSimCmd() *cobra.Command {
@@ -32,12 +34,21 @@ func bootstrapSimCmd() *cobra.Command {
 		Long:  "This command will create a new virtual SIM which is associated with current physical SIM, then create configuration for soratun. You need working \"krypton-cli\". See https://github.com/soracom/krypton-client-go for how to install.",
 		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			_, err := bootstrap(&soratun.SimBootstrapper{
+			config, err := bootstrap(&soratun.SimBootstrapper{
 				KryptonCliPath: kryptonCliPath,
 				Arguments:      buildKryptonCliArguments(),
-			}, true)
+			}, !stdout)
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
+			}
+
+			if stdout {
+				b, err := json.MarshalIndent(config, "", "  ")
+				if err != nil {
+					log.Fatalf("failed to decode bootstrapped configuration: %v", err)
+				}
+
+				fmt.Println(string(b))
 			}
 		},
 	}
@@ -55,6 +66,8 @@ func bootstrapSimCmd() *cobra.Command {
 	cmd.Flags().BoolVar(&disableKeyCache, "disable-key-cache", false, "Do not store authentication result to the key cache")
 	cmd.Flags().BoolVar(&clearKeyCache, "clear-key-cache", false, "Remove all items in the key cache")
 	cmd.Flags().StringVar(&kryptonCliPath, "krypton-cli-path", "/usr/local/bin/krypton-cli", "Path to krypton-cli")
+
+	cmd.Flags().BoolVar(&stdout, "stdout", false, "dump configuration to stdout")
 
 	return cmd
 }
