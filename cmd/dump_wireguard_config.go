@@ -15,15 +15,20 @@ func dumpWireGuardConfigCmd() *cobra.Command {
 		Args:   cobra.NoArgs,
 		PreRun: initSoratun,
 		Run: func(cmd *cobra.Command, args []string) {
-			dumpWireGuardConfig()
+			dumpWireGuardConfig(false)
 		},
 	}
 }
 
-func dumpWireGuardConfig() {
+func dumpWireGuardConfig(mask bool) {
 	var ips []string
 	for _, ip := range Config.ArcSession.ArcAllowedIPs {
 		ips = append(ips, (*net.IPNet)(ip).String())
+	}
+
+	privateKey := (Config.PrivateKey).String()
+	if mask {
+		privateKey = "(hidden)"
 	}
 
 	postUp := ""
@@ -57,7 +62,7 @@ Endpoint = %s:%d
 PersistentKeepalive = %d
 `,
 		Config.ArcSession.ArcClientPeerIpAddress,
-		Config.PrivateKey,
+		privateKey,
 		Config.Mtu,
 		postUp,
 		postDown,
