@@ -37,7 +37,7 @@ type Config struct {
 	SimId string `json:"simId"`
 	// LogLevel specifies logging level, verbose, error, or silent.
 	LogLevel int `json:"logLevel"`
-	// If EnableMetrics is true, metrics will be logged when log-level is verbose or error.
+	// If EnableMetrics is true, metrics will be logged when log-level is verbose.
 	EnableMetrics bool `json:"enableMetrics"`
 	// Interface is name for the tunnel interface.
 	Interface string `json:"interface"`
