@@ -39,9 +39,6 @@ func upCmd() *cobra.Command {
 					log.Fatalf("Failed to read configuration from stdin: %v", err)
 				}
 				Config = &config
-
-				Config.Mtu = mtu
-				Config.PersistentKeepalive = persistentKeepalive
 			} else {
 				initSoratun(cmd, args)
 

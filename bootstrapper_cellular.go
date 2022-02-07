@@ -21,6 +21,8 @@ func (b *CellularBootstrapper) Execute(config *Config) (*Config, error) {
 			EnableMetrics:        true,
 			Interface:            DefaultInterfaceName(),
 			AdditionalAllowedIPs: nil,
+			Mtu:                  DefaultMTU,
+			PersistentKeepalive:  DefaultPersistentKeepaliveInterval,
 			Profile:              nil,
 			ArcSession:           nil,
 		}
