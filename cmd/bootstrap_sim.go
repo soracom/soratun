@@ -24,7 +24,7 @@ var (
 	disableKeyCache            bool
 	clearKeyCache              bool
 	kryptonCliPath             string
-	stdout                     bool
+	dumpConfig                 bool
 )
 
 func bootstrapSimCmd() *cobra.Command {
@@ -37,12 +37,12 @@ func bootstrapSimCmd() *cobra.Command {
 			config, err := bootstrap(&soratun.SimBootstrapper{
 				KryptonCliPath: kryptonCliPath,
 				Arguments:      buildKryptonCliArguments(),
-			}, !stdout)
+			}, !dumpConfig)
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
 			}
 
-			if stdout {
+			if dumpConfig {
 				b, err := json.MarshalIndent(config, "", "  ")
 				if err != nil {
 					log.Fatalf("failed to decode bootstrapped configuration: %v", err)
@@ -66,7 +66,7 @@ func bootstrapSimCmd() *cobra.Command {
 	cmd.Flags().BoolVar(&disableKeyCache, "disable-key-cache", false, "Do not store authentication result to the key cache")
 	cmd.Flags().BoolVar(&clearKeyCache, "clear-key-cache", false, "Remove all items in the key cache")
 	cmd.Flags().StringVar(&kryptonCliPath, "krypton-cli-path", "/usr/local/bin/krypton-cli", "Path to krypton-cli")
-	cmd.Flags().BoolVar(&stdout, "stdout", false, "dump configuration to stdout, ignoring --config setting")
+	cmd.Flags().BoolVar(&dumpConfig, "dump-config", false, "dump configuration to stdout, ignoring --config setting")
 
 	return cmd
 }

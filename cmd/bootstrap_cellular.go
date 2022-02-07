@@ -20,12 +20,12 @@ func bootstrapCellularCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			config, err := bootstrap(&soratun.CellularBootstrapper{
 				Endpoint: kryptonCellularEndpoint,
-			}, !stdout)
+			}, !dumpConfig)
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
 			}
 
-			if stdout {
+			if dumpConfig {
 				b, err := json.MarshalIndent(config, "", "  ")
 				if err != nil {
 					log.Fatalf("failed to decode bootstrapped configuration: %v", err)
@@ -37,7 +37,7 @@ func bootstrapCellularCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&kryptonCellularEndpoint, "endpoint", "https://krypton.soracom.io:8036", "Specify SORACOM Krypton Provisioning API endpoint.")
-	cmd.Flags().BoolVar(&stdout, "stdout", false, "dump configuration to stdout, ignoring --config setting")
+	cmd.Flags().BoolVar(&dumpConfig, "dump-config", false, "dump configuration to stdout, ignoring --config setting")
 
 	return cmd
 }

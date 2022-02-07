@@ -17,7 +17,7 @@ var (
 	mtu                  int
 	persistentKeepalive  int
 	additionalAllowedIPs string
-	stdin                bool
+	readStdin            bool
 )
 
 func upCmd() *cobra.Command {
@@ -27,7 +27,7 @@ func upCmd() *cobra.Command {
 		Short:   "Setup SORACOM Arc interface",
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			if stdin {
+			if readStdin {
 				b, err := ioutil.ReadAll(os.Stdin)
 				if err != nil {
 					log.Fatalf("Failed to read configuration from stdin: %v", err)
@@ -75,7 +75,7 @@ func upCmd() *cobra.Command {
 	cmd.Flags().IntVar(&mtu, "mtu", soratun.DefaultMTU, "MTU for the interface, which will override arc.json#mtu value")
 	cmd.Flags().IntVar(&persistentKeepalive, "persistent-keepalive", soratun.DefaultPersistentKeepaliveInterval, "WireGuard `PersistentKeepalive` for the SORACOM Arc server, which will override arc.json#persistentKeepalive value")
 	cmd.Flags().StringVar(&additionalAllowedIPs, "additional-allowed-ips", "", "Comma separated string of additional WireGuard allowed CIDRs, which will be added to arc.json#additionalAllowedIPs array")
-	cmd.Flags().BoolVar(&stdin, "stdin", false, "read configuration from stdin, ignoring --config setting")
+	cmd.Flags().BoolVar(&readStdin, "read-stdin", false, "read configuration from stdin, ignoring --config setting")
 
 	return cmd
 }
