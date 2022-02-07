@@ -51,7 +51,7 @@ func upCmd() *cobra.Command {
 			Config.PersistentKeepalive = persistentKeepalive
 			if additionalAllowedIPs != "" {
 				for _, s := range strings.Split(additionalAllowedIPs, ",") {
-					_, ipnet, err := net.ParseCIDR(s)
+					_, ipnet, err := net.ParseCIDR(strings.TrimSpace(s))
 					if err != nil {
 						log.Fatalf("Invalid CIDR is set for \"--additional-allowd-ips\": %v", err)
 					}
