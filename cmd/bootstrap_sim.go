@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -34,21 +33,12 @@ func bootstrapSimCmd() *cobra.Command {
 		Long:  "This command will create a new virtual SIM which is associated with current physical SIM, then create configuration for soratun. You need working \"krypton-cli\". See https://github.com/soracom/krypton-client-go for how to install.",
 		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			config, err := bootstrap(&soratun.SimBootstrapper{
+			err := bootstrap(&soratun.SimBootstrapper{
 				KryptonCliPath: kryptonCliPath,
 				Arguments:      buildKryptonCliArguments(),
-			}, !dumpConfig)
+			})
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
-			}
-
-			if dumpConfig {
-				b, err := json.MarshalIndent(config, "", "  ")
-				if err != nil {
-					log.Fatalf("failed to decode bootstrapped configuration: %v", err)
-				}
-
-				fmt.Println(string(b))
 			}
 		},
 	}

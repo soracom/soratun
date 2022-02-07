@@ -36,28 +36,28 @@ sim      current SIM             SIM Authentication   Compatible modem/SIM card 
 }
 
 // bootstrap do bootstrap with specified bootstrapper. If persist is set to true, save it to the path specified with "--config" flag
-func bootstrap(bootstrapper soratun.Bootstrapper, persist bool) (*soratun.Config, error) {
+func bootstrap(bootstrapper soratun.Bootstrapper) error {
 	var currentConfig *soratun.Config = nil
 
-	if persist {
+	if !dumpConfig {
 		// if current config exists, pass it to the bootstrapper to merge if applicable
 		currentConfig, _ = readConfig(configPath)
 	}
 
 	config, err := bootstrapper.Execute(currentConfig)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if persist {
-		b, err := json.MarshalIndent(config, "", "  ")
-		if err != nil {
-			return nil, err
-		}
+	b, err := json.MarshalIndent(config, "", "  ")
+	if err != nil {
+		return err
+	}
 
+	if !dumpConfig {
 		err = writeConfigurationToFile(string(b))
 		if err != nil {
-			return nil, err
+			return err
 		}
 
 		if config.SimId != "" {
@@ -65,9 +65,11 @@ func bootstrap(bootstrapper soratun.Bootstrapper, persist bool) (*soratun.Config
 		}
 
 		printConfigurationFilePath()
+	} else {
+		fmt.Println(string(b))
 	}
 
-	return config, nil
+	return nil
 }
 
 func printConfigurationFilePath() {

@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/soracom/soratun"
@@ -18,20 +16,9 @@ func bootstrapCellularCmd() *cobra.Command {
 		Long:  "This command will create a new virtual SIM which is associated with current physical SIM, then create configuration for soratun. Need active SORACOM Air for Cellular connection.",
 		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			config, err := bootstrap(&soratun.CellularBootstrapper{
-				Endpoint: kryptonCellularEndpoint,
-			}, !dumpConfig)
+			err := bootstrap(&soratun.CellularBootstrapper{Endpoint: kryptonCellularEndpoint})
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
-			}
-
-			if dumpConfig {
-				b, err := json.MarshalIndent(config, "", "  ")
-				if err != nil {
-					log.Fatalf("failed to decode bootstrapped configuration: %v", err)
-				}
-
-				fmt.Println(string(b))
 			}
 		},
 	}
