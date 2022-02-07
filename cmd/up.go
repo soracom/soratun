@@ -39,16 +39,26 @@ func upCmd() *cobra.Command {
 					log.Fatalf("Failed to read configuration from stdin: %v", err)
 				}
 				Config = &config
+
+				Config.Mtu = mtu
+				Config.PersistentKeepalive = persistentKeepalive
 			} else {
 				initSoratun(cmd, args)
+
+				// override only if the flag was explicitly set
+				if cmd.Flags().Changed("mtu") {
+					Config.Mtu = mtu
+				}
+
+				if cmd.Flags().Changed("persistent-keepalive") {
+					Config.PersistentKeepalive = persistentKeepalive
+				}
 			}
 
 			if Config.ArcSession == nil {
 				log.Fatal("Failed to determine connection information. Please bootstrap or create a new session from the user console.")
 			}
 
-			Config.Mtu = mtu
-			Config.PersistentKeepalive = persistentKeepalive
 			if additionalAllowedIPs != "" {
 				for _, s := range strings.Split(additionalAllowedIPs, ",") {
 					_, ipnet, err := net.ParseCIDR(strings.TrimSpace(s))
