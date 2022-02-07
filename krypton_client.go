@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
+	"os"
 	"strings"
 
 	"github.com/soracom/soratun/internal"
@@ -93,10 +94,10 @@ func (c *DefaultSoracomKryptonClient) callAPI(params *apiParams) (*http.Response
 	}
 
 	if c.Verbose() {
-		println("--- Request dump ---------------------------------")
+		fmt.Fprintln(os.Stderr, "--- Request dump ---------------------------------")
 		r, _ := httputil.DumpRequest(req, true)
-		println(r)
-		println("--- End of request dump --------------------------")
+		fmt.Fprintln(os.Stderr, r)
+		fmt.Fprintln(os.Stderr, "--- End of request dump --------------------------")
 	}
 	res, err := c.doRequest(req)
 	return res, err
@@ -128,10 +129,10 @@ func (c *DefaultSoracomKryptonClient) doRequest(req *http.Request) (*http.Respon
 	}
 
 	if c.Verbose() && res != nil {
-		println("--- Response dump --------------------------------")
+		fmt.Fprintln(os.Stderr, "--- Response dump --------------------------------")
 		r, _ := httputil.DumpResponse(res, true)
-		println(r)
-		println("--- End of response dump -------------------------")
+		fmt.Fprintln(os.Stderr, r)
+		fmt.Fprintln(os.Stderr, "--- End of response dump -------------------------")
 	}
 
 	if res.StatusCode >= http.StatusBadRequest {
