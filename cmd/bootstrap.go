@@ -40,7 +40,14 @@ func bootstrap(bootstrapper soratun.Bootstrapper) error {
 	var currentConfig *soratun.Config = nil
 
 	if !dumpConfig {
-		// if current config exists, pass it to the bootstrapper to merge if applicable
+		// Won't check error from `readConfig` because:
+		//
+		// 1. In the very first run, which means no `arc.json` in the file system, the `readConfig` always fail.
+		//    We should move bootstrapping process forward.
+		// 2. Also bootstrap process—creating a new virtual SIM—should be finished successfully regardless of error
+		//    (read failure, invalid JSON format, etc.) Once failed (= `currentCOnfig` is `nil`), Bootstrapper#Execute
+		//    will create a fresh `soratun.Config` (it will vary on each bootstrap method) and can move the process
+		//    forward. Bootstrapper will update existing configuration.
 		currentConfig, _ = readConfig(configPath)
 	}
 
