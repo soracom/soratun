@@ -23,6 +23,7 @@ var (
 	disableKeyCache            bool
 	clearKeyCache              bool
 	kryptonCliPath             string
+	dumpConfig                 bool
 )
 
 func bootstrapSimCmd() *cobra.Command {
@@ -32,7 +33,7 @@ func bootstrapSimCmd() *cobra.Command {
 		Long:  "This command will create a new virtual SIM which is associated with current physical SIM, then create configuration for soratun. You need working \"krypton-cli\". See https://github.com/soracom/krypton-client-go for how to install.",
 		Args:  cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			_, err := bootstrap(&soratun.SimBootstrapper{
+			err := bootstrap(&soratun.SimBootstrapper{
 				KryptonCliPath: kryptonCliPath,
 				Arguments:      buildKryptonCliArguments(),
 			})
@@ -55,6 +56,7 @@ func bootstrapSimCmd() *cobra.Command {
 	cmd.Flags().BoolVar(&disableKeyCache, "disable-key-cache", false, "Do not store authentication result to the key cache")
 	cmd.Flags().BoolVar(&clearKeyCache, "clear-key-cache", false, "Remove all items in the key cache")
 	cmd.Flags().StringVar(&kryptonCliPath, "krypton-cli-path", "/usr/local/bin/krypton-cli", "Path to krypton-cli")
+	cmd.Flags().BoolVar(&dumpConfig, "dump-config", false, "dump configuration to stdout, ignoring --config setting")
 
 	return cmd
 }

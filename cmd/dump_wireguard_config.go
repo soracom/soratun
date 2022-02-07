@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"net"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -15,12 +17,12 @@ func dumpWireGuardConfigCmd() *cobra.Command {
 		Args:   cobra.NoArgs,
 		PreRun: initSoratun,
 		Run: func(cmd *cobra.Command, args []string) {
-			dumpWireGuardConfig(false)
+			dumpWireGuardConfig(false, os.Stdout)
 		},
 	}
 }
 
-func dumpWireGuardConfig(mask bool) {
+func dumpWireGuardConfig(mask bool, w io.Writer) {
 	var ips []string
 	for _, ip := range Config.ArcSession.ArcAllowedIPs {
 		ips = append(ips, (*net.IPNet)(ip).String())
@@ -50,7 +52,7 @@ func dumpWireGuardConfig(mask bool) {
 		}
 	}
 
-	fmt.Printf(`[Interface]
+	fmt.Fprintf(w, `[Interface]
 Address = %s/32
 PrivateKey = %s
 MTU = %d

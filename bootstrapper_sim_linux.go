@@ -21,7 +21,9 @@ func (b *SimBootstrapper) Execute(config *Config) (*Config, error) {
 		return nil, err
 	}
 
-	fmt.Printf("Running %s %s\n", b.KryptonCliPath, b.Arguments)
+	if v := os.Getenv("SORACOM_VERBOSE"); v != "" {
+		fmt.Fprintf(os.Stderr, "Running %s %s\n", b.KryptonCliPath, b.Arguments)
+	}
 
 	// if no config, create a blank, then replace keys and ArcSession with new
 	if config == nil {
@@ -33,6 +35,8 @@ func (b *SimBootstrapper) Execute(config *Config) (*Config, error) {
 			EnableMetrics:        true,
 			Interface:            DefaultInterfaceName(),
 			AdditionalAllowedIPs: nil,
+			Mtu:                  DefaultMTU,
+			PersistentKeepalive:  DefaultPersistentKeepaliveInterval,
 			Profile:              nil,
 			ArcSession:           nil,
 		}
@@ -61,7 +65,10 @@ func (b *SimBootstrapper) Execute(config *Config) (*Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error while marshaling response from krypton-cli: %s", err)
 	}
-	fmt.Printf("Got response from %s: %s\n", b.KryptonCliPath, t)
+
+	if v := os.Getenv("SORACOM_VERBOSE"); v != "" {
+		fmt.Fprintf(os.Stderr, "Got response from %s: %s\n", b.KryptonCliPath, t)
+	}
 
 	config.PrivateKey = arcSession.ArcClientPeerPrivateKey
 	config.PublicKey = (Key)(arcSession.ArcClientPeerPrivateKey.AsWgKey().PublicKey())

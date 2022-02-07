@@ -35,31 +35,48 @@ sim      current SIM             SIM Authentication   Compatible modem/SIM card 
 	return cmd
 }
 
-func bootstrap(bootstrapper soratun.Bootstrapper) (*soratun.Config, error) {
-	// if current config exists, pass it to the bootstrapper to merge if applicable
-	currentConfig, _ := readConfig(configPath)
+// bootstrap do bootstrap with specified bootstrapper. If persist is set to true, save it to the path specified with "--config" flag
+func bootstrap(bootstrapper soratun.Bootstrapper) error {
+	var currentConfig *soratun.Config = nil
+
+	if !dumpConfig {
+		// Won't check error from `readConfig` because:
+		//
+		// 1. In the very first run, which means no `arc.json` in the file system, the `readConfig` always fail.
+		//    We should move bootstrapping process forward.
+		// 2. Also bootstrap process—creating a new virtual SIM—should be finished successfully regardless of error
+		//    (read failure, invalid JSON format, etc.) Once failed (= `currentCOnfig` is `nil`), Bootstrapper#Execute
+		//    will create a fresh `soratun.Config` (it will vary on each bootstrap method) and can move the process
+		//    forward. Bootstrapper will update existing configuration.
+		currentConfig, _ = readConfig(configPath)
+	}
+
 	config, err := bootstrapper.Execute(currentConfig)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	b, err := json.MarshalIndent(config, "", "  ")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	err = writeConfigurationToFile(string(b))
-	if err != nil {
-		return nil, err
+	if !dumpConfig {
+		err = writeConfigurationToFile(string(b))
+		if err != nil {
+			return err
+		}
+
+		if config.SimId != "" {
+			fmt.Printf("Virtual subscriber SIM ID: %s\n", config.SimId)
+		}
+
+		printConfigurationFilePath()
+	} else {
+		fmt.Println(string(b))
 	}
 
-	if config.SimId != "" {
-		fmt.Printf("Virtual subscriber SIM ID: %s\n", config.SimId)
-	}
-
-	printConfigurationFilePath()
-
-	return config, nil
+	return nil
 }
 
 func printConfigurationFilePath() {

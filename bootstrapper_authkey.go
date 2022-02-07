@@ -52,6 +52,8 @@ func (b *AuthKeyBootstrapper) Execute(config *Config) (*Config, error) {
 			EnableMetrics:        true,
 			Interface:            DefaultInterfaceName(),
 			AdditionalAllowedIPs: nil,
+			Mtu:                  DefaultMTU,
+			PersistentKeepalive:  DefaultPersistentKeepaliveInterval,
 			Profile:              b.Profile,
 			ArcSession:           &sim.ArcSession,
 		}

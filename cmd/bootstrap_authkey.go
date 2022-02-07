@@ -51,9 +51,7 @@ func bootstrapAuthKeyCmd() *cobra.Command {
 				}
 			}
 
-			_, err = bootstrap(&soratun.AuthKeyBootstrapper{
-				Profile: profile,
-			})
+			err = bootstrap(&soratun.AuthKeyBootstrapper{Profile: profile})
 			if err != nil {
 				log.Fatalf("failed to bootstrap: %v", err)
 			}
