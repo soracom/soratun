@@ -41,15 +41,15 @@ func upCmd() *cobra.Command {
 				Config = &config
 			} else {
 				initSoratun(cmd, args)
+			}
 
-				// override only if the flag was explicitly set
-				if cmd.Flags().Changed("mtu") {
-					Config.Mtu = mtu
-				}
+			// override only if the flag was explicitly set
+			if cmd.Flags().Changed("mtu") {
+				Config.Mtu = mtu
+			}
 
-				if cmd.Flags().Changed("persistent-keepalive") {
-					Config.PersistentKeepalive = persistentKeepalive
-				}
+			if cmd.Flags().Changed("persistent-keepalive") {
+				Config.PersistentKeepalive = persistentKeepalive
 			}
 
 			if Config.ArcSession == nil {
