@@ -69,7 +69,7 @@ func initSoratun(_ *cobra.Command, _ []string) {
 func readConfig(path string) (*soratun.Config, error) {
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("faile to open config file: %s", path)
+		return nil, fmt.Errorf("failed to open config file: %s", path)
 	}
 
 	var config soratun.Config
