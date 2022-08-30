@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-systemd/v22 v22.3.2
 	github.com/golang/mock v1.6.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/spf13/cobra v1.2.1
+	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.0
 	github.com/vishvananda/netlink v1.1.0
 	golang.zx2c4.com/wireguard v0.0.0-20211104115355-851efb1bb655
