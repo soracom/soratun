@@ -80,7 +80,7 @@ func upCmd() *cobra.Command {
 	}
 
 	cmd.Flags().IntVar(&mtu, "mtu", soratun.DefaultMTU, "MTU for the interface, which will override arc.json#mtu value")
-	cmd.Flags().IntVar(&persistentKeepalive, "persistent-keepalive", soratun.DefaultPersistentKeepaliveInterval, "WireGuard `PersistentKeepalive` for the SORACOM Arc server, which will override arc.json#persistentKeepalive value")
+	cmd.Flags().IntVar(&persistentKeepalive, "persistent-keepalive", soratun.DefaultPersistentKeepaliveInterval, "WireGuard \"PersistentKeepalive\" for the SORACOM Arc server, which will override arc.json#persistentKeepalive value")
 	cmd.Flags().StringVar(&additionalAllowedIPs, "additional-allowed-ips", "", "Comma separated string of additional WireGuard allowed CIDRs, which will be added to arc.json#additionalAllowedIPs array")
 	cmd.Flags().BoolVar(&readStdin, "read-stdin", false, "read configuration from stdin, ignoring --config setting")
 
