@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"os"
@@ -142,7 +141,7 @@ func (c *DefaultSoracomKryptonClient) doRequest(req *http.Request) (*http.Respon
 				fmt.Println("failed to close response", err)
 			}
 		}()
-		r, _ := ioutil.ReadAll(res.Body)
+		r, _ := io.ReadAll(res.Body)
 		return res, fmt.Errorf("%s: %s %s: %s", res.Status, req.Method, req.URL, r)
 	}
 	return res, nil

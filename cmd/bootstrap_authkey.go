@@ -60,7 +60,7 @@ func bootstrapAuthKeyCmd() *cobra.Command {
 
 	cmd.Flags().StringVar(&authKeyId, "auth-key-id", "", "SORACOM API auth key ID")
 	cmd.Flags().StringVar(&authKey, "auth-key", "", "SORACOM API auth key")
-	cmd.Flags().StringVar(&coverage, "coverage-type", "", "Specify coverage type, 'g' for Global, 'jp' for Japan")
+	cmd.Flags().StringVar(&coverage, "coverage-type", "", "Specify coverage type, \"g\" for Global, \"jp\" for Japan")
 
 	return cmd
 }
