@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -67,7 +66,7 @@ func initSoratun(_ *cobra.Command, _ []string) {
 }
 
 func readConfig(path string) (*soratun.Config, error) {
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open config file: %s", path)
 	}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"os"
@@ -16,6 +15,7 @@ import (
 // A SoracomClient represents an API client for SORACOM API. See
 // https://developers.soracom.io/en/docs/tools/api-reference/ or
 // https://dev.soracom.io/jp/docs/api_guide/
+//
 //go:generate mockgen -source client.go -destination internal/mock/client.go
 type SoracomClient interface {
 	CreateVirtualSim() (*VirtualSim, error)
@@ -250,7 +250,7 @@ func (c *DefaultSoracomClient) doRequest(req *http.Request) (*http.Response, err
 				fmt.Println("failed to close response", err)
 			}
 		}()
-		r, _ := ioutil.ReadAll(res.Body)
+		r, _ := io.ReadAll(res.Body)
 		return res, fmt.Errorf("%s: %s %s: %s", res.Status, req.Method, req.URL, r)
 	}
 	return res, nil
