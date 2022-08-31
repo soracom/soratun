@@ -16,6 +16,7 @@ import (
 // A SoracomClient represents an API client for SORACOM API. See
 // https://developers.soracom.io/en/docs/tools/api-reference/ or
 // https://dev.soracom.io/jp/docs/api_guide/
+//
 //go:generate mockgen -source client.go -destination internal/mock/client.go
 type SoracomClient interface {
 	CreateVirtualSim() (*VirtualSim, error)
