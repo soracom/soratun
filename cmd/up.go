@@ -3,7 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net"
 	"os"
@@ -28,7 +28,7 @@ func upCmd() *cobra.Command {
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			if readStdin {
-				b, err := ioutil.ReadAll(os.Stdin)
+				b, err := io.ReadAll(os.Stdin)
 				if err != nil {
 					log.Fatalf("Failed to read configuration from stdin: %v", err)
 				}
