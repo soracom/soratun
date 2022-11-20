@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
-	github.com/coreos/go-systemd/v22 v22.3.2
+	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/golang/mock v1.6.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/spf13/cobra v1.5.0
