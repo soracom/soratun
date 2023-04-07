@@ -38,7 +38,7 @@ macOS:
     $ soratun completion zsh > /usr/local/share/zsh/site-functions/_soratun
 `,
 		ValidArgs: []string{"bash", "zsh"},
-		Args:      cobra.ExactValidArgs(1),
+		Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		Run: func(cmd *cobra.Command, args []string) {
 			var err error
 			switch args[0] {
