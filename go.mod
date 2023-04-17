@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-systemd/v22 v22.3.2
 	github.com/golang/mock v1.6.0
 	github.com/manifoldco/promptui v0.9.0
-	github.com/spf13/cobra v1.5.0
+	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.0
 	github.com/vishvananda/netlink v1.1.0
 	golang.zx2c4.com/wireguard v0.0.0-20211104115355-851efb1bb655
@@ -18,7 +18,7 @@ require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/go-cmp v0.5.6 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/josharian/native v0.0.0-20200817173448-b6b71def0850 // indirect
 	github.com/juju/ansiterm v0.0.0-20210929141451-8b71cc96ebdc // indirect
 	github.com/lunixbochs/vtclean v1.0.0 // indirect
