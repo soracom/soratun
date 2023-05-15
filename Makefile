@@ -3,7 +3,7 @@ BIN=soratun
 SRC=$(shell find . -type f -name '*.go')
 TEST_CONTAINER_NAME=soratun-test
 TEST_CONTAINER_RESOURCE=$(TEST_CONTAINER_NAME):latest
-GOLANGCI_VERSION=1.40.1
+GOLANGCI_VERSION=1.52.2
 
 check: fmt-check test lint vet
 check-ci: fmt-check test vet
