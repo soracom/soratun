@@ -1,6 +1,7 @@
 FROM linuxserver/wireguard:amd64-version-v1.0.20210914
 
 WORKDIR /tmp
+RUN apk add make tar
 RUN curl -LO https://golang.org/dl/go1.21.0.linux-amd64.tar.gz \
   && rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin:/root/go/bin
