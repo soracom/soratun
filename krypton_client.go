@@ -95,7 +95,7 @@ func (c *DefaultSoracomKryptonClient) callAPI(params *apiParams) (*http.Response
 	if c.Verbose() {
 		fmt.Fprintln(os.Stderr, "--- Request dump ---------------------------------")
 		r, _ := httputil.DumpRequest(req, true)
-		fmt.Fprintln(os.Stderr, r)
+		fmt.Fprintln(os.Stderr, string(r))
 		fmt.Fprintln(os.Stderr, "--- End of request dump --------------------------")
 	}
 	res, err := c.doRequest(req)
@@ -130,7 +130,7 @@ func (c *DefaultSoracomKryptonClient) doRequest(req *http.Request) (*http.Respon
 	if c.Verbose() && res != nil {
 		fmt.Fprintln(os.Stderr, "--- Response dump --------------------------------")
 		r, _ := httputil.DumpResponse(res, true)
-		fmt.Fprintln(os.Stderr, r)
+		fmt.Fprintln(os.Stderr, string(r))
 		fmt.Fprintln(os.Stderr, "--- End of response dump -------------------------")
 	}
 
