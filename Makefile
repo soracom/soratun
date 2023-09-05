@@ -5,7 +5,7 @@ TEST_CONTAINER_NAME=soratun-test
 TEST_CONTAINER_RESOURCE=$(TEST_CONTAINER_NAME):latest
 GOLANGCI_VERSION=1.54.2
 GOIMPORTS_VERSION=0.12.0
-MOCKGEN_VERSION=1.6.0
+MOCKGEN_VERSION=0.2.0
 
 check: fmt-check test lint vet
 check-ci: fmt-check test vet
@@ -58,7 +58,7 @@ install-dev-deps:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
 		| sh -s -- -b $(shell go env GOPATH)/bin v$(GOLANGCI_VERSION) \
 		&& go install golang.org/x/tools/cmd/goimports@v$(GOIMPORTS_VERSION) \
-		&& go install github.com/golang/mock/mockgen@v$(MOCKGEN_VERSION)
+		&& go install go.uber.org/mock/mockgen@v$(MOCKGEN_VERSION)
 
 lint:
 	golangci-lint run ./...

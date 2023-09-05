@@ -7,8 +7,8 @@ package mock_soratun
 import (
 	reflect "reflect"
 
-	gomock "github.com/golang/mock/gomock"
 	soratun "github.com/soracom/soratun"
+	gomock "go.uber.org/mock/gomock"
 )
 
 // MockSoracomClient is a mock of SoracomClient interface.
