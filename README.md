@@ -97,8 +97,8 @@ $ soratun bootstrap authkey --auth-key-id keyId-xxx --auth-key secret-xxx --cove
 
 For other bootstrapping method detail, please consult SORACOM documentation at:
 
-- English: https://developers.soracom.io/en/
-- Japanese: https://users.soracom.io/ja-jp/docs/arc/
+- English: https://developers.soracom.io/en/docs/arc/soratun/
+- Japanese: https://users.soracom.io/ja-jp/docs/arc/soratun-overview/
 
 ### Running as a daemon with `systemd`
 
