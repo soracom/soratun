@@ -8,11 +8,10 @@ An easy-to-use, userspace [SORACOM Arc](https://soracom.jp/services/arc/) client
 ## Tested Platforms
 
 - Linux amd64
-  - Ubuntu 20.04.2 LTS
+  - Ubuntu 22.04.5 LTS
 - Linux arm (Raspberry Pi 32-bit)
-  - Raspberry Pi OS 2021-05-07
-  - Ubuntu 20.04.2 LTS
-- macOS Big Sur 11.3 (20E232) -- **For development and testing purpose only**
+  - Ubuntu 22.04.5 LTS
+- macOS Sequoia 15.0 (24A335) -- **For development and testing purpose only**
 
 ## Usage
 
