@@ -8,7 +8,7 @@ GOLANGCI_VERSION=1.61.0
 GOIMPORTS_VERSION=0.12.0
 MOCKGEN_VERSION=0.2.0
 JSON_SCHEMA_DOCS_VERSION=0.2.1
-GORELEASER_VERSION=1.20.0
+GORELEASER_VERSION=2.3.2
 
 check: fmt-check test lint vet
 check-ci: fmt-check test vet
@@ -17,7 +17,7 @@ $(BIN): $(SRC) go.mod
 	CGO_ENABLED=0 $(GO) build -ldflags='-s -w -X "github.com/soracom/soratun/internal.Revision=$(shell git rev-parse HEAD)" -X "github.com/soracom/soratun/internal.Version=$(shell git describe --tags $$(git rev-list --tags --max-count=1))"' -trimpath ./cmd/soratun
 
 snapshot: json-schema-docs
-	which goreleaser && goreleaser --snapshot --skip-publish --clean
+	which goreleaser && goreleaser --snapshot --skip=publish --clean
 
 clean:
 	rm -fr $(BIN) dist
@@ -63,7 +63,7 @@ install-dev-deps:
 		&& go install golang.org/x/tools/cmd/goimports@v$(GOIMPORTS_VERSION) \
 		&& go install go.uber.org/mock/mockgen@v$(MOCKGEN_VERSION) \
 		&& go install github.com/marcusolsson/json-schema-docs@v$(JSON_SCHEMA_DOCS_VERSION) \
-		&& go install github.com/goreleaser/goreleaser@v$(GORELEASER_VERSION)
+		&& go install github.com/goreleaser/goreleaser/v2@v$(GORELEASER_VERSION)
 
 lint:
 	golangci-lint run ./...
