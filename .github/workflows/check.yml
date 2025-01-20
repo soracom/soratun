@@ -9,12 +9,12 @@ jobs:
       image: ghcr.io/soracom/soratun/soratun-test:latest
       env:
         WG_INTEG_TEST: enabled
-      options: --cap-add=NET_ADMIN --cap-add=SYS_MODULE -e PUID=1000 -e PGID=1000 -e TZ=UTC --sysctl="net.ipv4.conf.all.src_valid_mark=1"
+      options: --cap-add=NET_ADMIN --cap-add=SYS_MODULE --device=/dev/net/tun -e PUID=1000 -e PGID=1000 -e TZ=UTC --sysctl="net.ipv4.conf.all.src_valid_mark=1"
     steps:
     - name: Check out code
       uses: actions/checkout@v4
     - name: Prepare the tunnel
-      run: mkdir -p /dev/net ; mknod /dev/net/tun c 10 200 ; chmod 600 /dev/net/tun
+      run: chmod 600 /dev/net/tun
     - name: Do checking
       run: make check-ci
     - name: golangci-lint
