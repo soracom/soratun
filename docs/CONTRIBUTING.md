@@ -37,6 +37,9 @@ $ make integration-test-container
 
 #### How to run it
 
+> [!NOTE]
+> You need amd64 machine to run this test locally.
+
 ```
 $ make run-integration-test-container
 $ make integration-test
