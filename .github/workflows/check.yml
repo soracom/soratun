@@ -12,7 +12,7 @@ jobs:
       options: --cap-add=NET_ADMIN --cap-add=SYS_MODULE --device=/dev/net/tun -e PUID=1000 -e PGID=1000 -e TZ=UTC --sysctl="net.ipv4.conf.all.src_valid_mark=1"
     steps:
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Prepare the tunnel
       run: chmod 600 /dev/net/tun
     - name: Do checking
