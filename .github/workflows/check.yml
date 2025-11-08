@@ -18,6 +18,6 @@ jobs:
     - name: Do checking
       run: make check-ci
     - name: golangci-lint
-      uses: golangci/golangci-lint-action@v6
+      uses: golangci/golangci-lint-action@v9
       with:
         version: v1.61.0
