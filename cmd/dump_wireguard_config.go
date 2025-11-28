@@ -33,6 +33,8 @@ func dumpWireGuardConfig(mask bool, w io.Writer) {
 		privateKey = "(hidden)"
 	}
 
+	simId := Config.SimId
+
 	postUp := ""
 	postDown := ""
 	if len(Config.PostUp) > 0 {
@@ -56,6 +58,7 @@ func dumpWireGuardConfig(mask bool, w io.Writer) {
 Address = %s/32
 PrivateKey = %s
 MTU = %d
+# SIM ID: %s
 %s%s
 [Peer]
 PublicKey = %s
@@ -66,6 +69,7 @@ PersistentKeepalive = %d
 		Config.ArcSession.ArcClientPeerIpAddress,
 		privateKey,
 		Config.Mtu,
+		simId,
 		postUp,
 		postDown,
 		Config.ArcSession.ArcServerPeerPublicKey,
